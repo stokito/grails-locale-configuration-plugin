@@ -1,3 +1,5 @@
+import name.stokito.SmartConfigLocaleResolver
+
 class GrailsLocaleConfigurationPluginGrailsPlugin {
     String groupId = 'name.stokito'
     String version = '0.1'
@@ -15,8 +17,12 @@ You can allow only supported languages. For example: English, Russian and German
     def issueManagement = [system: 'GitHub', url: 'https://github.com/stokito/grails-locale-configuration-plugin/issues']
     def scm = [url: 'https://github.com/stokito/grails-locale-configuration-plugin'] //TODO http://svn.codehaus.org/grails-plugins/
 
+    List loadAfter = ['i18n']
     def doWithSpring = {
-        // TODO Implement runtime spring config (optional)
+        localeResolver(SmartConfigLocaleResolver) {
+            supportedLocales = application.config.supportedLocales ?: []
+            defaultLocale = application.config.defaultLocale ?: null
+        }
     }
 
 }
