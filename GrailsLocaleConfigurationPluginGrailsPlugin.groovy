@@ -6,7 +6,8 @@ class GrailsLocaleConfigurationPluginGrailsPlugin {
     String author = 'Sergey Ponomarev'
     String authorEmail = 'stokito@gmail.com'
     def description = '''\
-This plugin helps you to set default site locale and limit user choice to only supported locales.
+This plugin intended to control the language support in Grails. Your site may support only few languages.
+You can allow only supported languages. For example: English, Russian and German, and all other languages should be forced to English.
 '''
     String documentation = 'http://grails.org/plugin/grails-locale-configuration-plugin' //TODO http://grails.org/plugin/grails-locale-configuration-plugin
     String license = 'APACHE'
