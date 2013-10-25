@@ -27,7 +27,7 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
         }
         Locale localeDesiredByUser = request.locale
         Locale selectedLocale
-        if (supportedLocales.contains(localeDesiredByUser)) {
+        if (localeIsSupported(localeDesiredByUser)) {
             selectedLocale = localeDesiredByUser
         } else {
             selectedLocale = findLocaleWithSameLanguage(localeDesiredByUser)
@@ -37,6 +37,10 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
         }
         return selectedLocale
 
+    }
+
+    boolean localeIsSupported(Locale localeDesiredByUser) {
+       return supportedLocales?.contains(localeDesiredByUser)
     }
 
     private static Locale getLocaleSavedToSession(HttpServletRequest request) {
