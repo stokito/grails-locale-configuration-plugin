@@ -33,6 +33,8 @@ Locales priority
 2. First locale from Accept-language header that is configured in user browser.
 3. defaultLocale from Config.groovy
 
+[Take a look into specification for more details](/test/unit/stokito/SmartConfigLocaleResolverSpec.groovy)
+
 Running application example
 ================================
 You can watch [Grails Locale Configuration Plugin demo application] (https://github.com/stokito/grails-locale-configuration-plugin-demo)
