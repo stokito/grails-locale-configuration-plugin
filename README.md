@@ -50,6 +50,7 @@ Take a look at the demo to see the plugin in action: [Grails Locale Configuratio
 NOTE: If you want to test your locales (languages), just add the locales to the Config.groovy as descriped in 'Configuration'.
 
 Run demo, like every other Grails application
+
     grails run-app
 
 Application can be accessed by URL http://localhost:8080/
