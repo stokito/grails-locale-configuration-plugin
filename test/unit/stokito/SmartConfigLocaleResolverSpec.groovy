@@ -104,9 +104,9 @@ class SmartConfigLocaleResolverSpec extends Specification {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [Locale.GERMANY]
-        List<Locale> userPreferrdLocales = [UNSUPPORTED_LOCALE, Locale.GERMANY]
+        List<Locale> userPreferredLocales = [UNSUPPORTED_LOCALE, Locale.GERMANY]
         when:
-        Locale preferredSupportedLocale = resolver.findPreferredSupportedLocale(userPreferrdLocales)
+        Locale preferredSupportedLocale = resolver.findPreferredSupportedLocale(userPreferredLocales)
         then:
         preferredSupportedLocale == Locale.GERMANY
     }
