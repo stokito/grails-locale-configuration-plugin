@@ -111,7 +111,16 @@ class SmartConfigLocaleResolverSpec extends Specification {
         preferredSupportedLocale == Locale.GERMANY
     }
 
-
+    void 'findPreferredSupportedLocale()'() {
+        given:
+        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
+        resolver.supportedLocales = [Locale.ENGLISH, Locale.US, Locale.CANADA, Locale.UK]
+        List<Locale> userPreferredLocales = [Locale.UK, Locale.ENGLISH]
+        when:
+        Locale preferredSupportedLocale = resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
+        then:
+        preferredSupportedLocale == Locale.UK
+    }
 
 }
 
