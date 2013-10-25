@@ -1,6 +1,7 @@
 # JetBrains IntelliJ IDEA files
 .idea/
 *.iml
+atlassian-ide-plugin.xml
 
 # Log files
 *.log
