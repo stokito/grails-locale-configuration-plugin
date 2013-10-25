@@ -118,8 +118,11 @@ class SmartConfigLocaleResolverSpec extends Specification {
         expect:
         preferredSupportedLocale == resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
         where:
-        supportedLocales                                      | userPreferredLocales        | preferredSupportedLocale
-        [Locale.ENGLISH, Locale.US, Locale.CANADA, Locale.UK] | [Locale.UK, Locale.ENGLISH] | Locale.UK
+        supportedLocales                                      | userPreferredLocales            | preferredSupportedLocale
+        [Locale.ENGLISH, Locale.US, Locale.CANADA, Locale.UK] | [Locale.UK, Locale.ENGLISH]     | Locale.UK
+        [Locale.ENGLISH, Locale.US, Locale.CANADA, Locale.UK] | [Locale.CANADA, Locale.ENGLISH] | Locale.CANADA
+        [Locale.ENGLISH, Locale.US, Locale.CANADA, Locale.UK] | [Locale.US, Locale.ENGLISH]     | Locale.US
+        [Locale.ENGLISH, Locale.US, Locale.CANADA, Locale.UK] | [Locale.ENGLISH]                | Locale.ENGLISH
     }
 
 }
