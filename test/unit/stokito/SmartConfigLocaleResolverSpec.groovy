@@ -71,6 +71,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [Locale.GERMAN]
         request.addPreferredLocale(Locale.GERMANY)
+        assert request.locale == Locale.GERMANY
         when:
         Locale resolvedLocale = resolver.resolveLocale(request)
         then:

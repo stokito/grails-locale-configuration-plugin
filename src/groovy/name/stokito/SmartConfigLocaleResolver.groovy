@@ -34,11 +34,19 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
     }
 
     Locale findFirstPreferredSupportedLocale(List<Locale> userPreferredLocales) {
-        Locale preferredSupportedLocale = userPreferredLocales.find( { preferredLocale -> localeIsSupported(preferredLocale) })
+        Locale preferredSupportedLocale = findFirstPreferredSupportedLocaleByLanguageAndCountry(userPreferredLocales)
         if (!preferredSupportedLocale) {
-            preferredSupportedLocale = userPreferredLocales.find( { preferredLocale -> localeIsSupportedByLanguage(preferredLocale) })
+            preferredSupportedLocale = findFirstPreferredSupportedLocaleByLanguage(userPreferredLocales)
         }
         return preferredSupportedLocale
+    }
+
+    Locale findFirstPreferredSupportedLocaleByLanguage(List<Locale> userPreferredLocales) {
+        userPreferredLocales.find({ preferredLocale -> localeIsSupportedByLanguage(preferredLocale) })
+    }
+
+    Locale findFirstPreferredSupportedLocaleByLanguageAndCountry(List<Locale> userPreferredLocales) {
+        userPreferredLocales.find({ preferredLocale -> localeIsSupported(preferredLocale) })
     }
 
     boolean localeIsSupported(Locale localeDesiredByUser) {
