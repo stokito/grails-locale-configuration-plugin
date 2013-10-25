@@ -26,17 +26,22 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
             return localeSavedToSession
         }
         Locale localeDesiredByUser = request.locale
+        Locale selectedLocale = findPreferredSupportedLocale(localeDesiredByUser)
+        if (!selectedLocale) {
+            selectedLocale = determineDefaultLocale(request);
+        }
+        return selectedLocale
+
+    }
+
+    Locale findPreferredSupportedLocale(Locale localeDesiredByUser) {
         Locale selectedLocale
         if (localeIsSupported(localeDesiredByUser)) {
             selectedLocale = localeDesiredByUser
         } else {
             selectedLocale = findSupportedLocaleWithSameLanguage(localeDesiredByUser)
         }
-        if (!selectedLocale) {
-            selectedLocale = determineDefaultLocale(request);
-        }
         return selectedLocale
-
     }
 
     boolean localeIsSupported(Locale localeDesiredByUser) {
