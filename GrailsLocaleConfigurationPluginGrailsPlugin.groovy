@@ -2,7 +2,7 @@ import name.stokito.SmartConfigLocaleResolver
 
 class GrailsLocaleConfigurationPluginGrailsPlugin {
     String groupId = 'name.stokito'
-    String version = '0.1'
+    String version = '0.2'
     String grailsVersion = '2.3 > *'
     String title = 'Grails Locale Configuration Plugin'
     String author = 'Sergey Ponomarev'
@@ -13,7 +13,10 @@ You can allow only supported languages. For example: English, Russian and German
 '''
     String documentation = 'http://grails.org/plugin/grails-locale-configuration-plugin' //TODO http://grails.org/plugin/grails-locale-configuration-plugin
     String license = 'APACHE'
-    List developers = [[name: 'Sergey Ponomarev', email: 'stokito@gmail.com']]
+    List developers = [
+            [name: 'Sergey Ponomarev', email: 'stokito@gmail.com'],
+            [name: 'Barry Norman', email: 'mail@barrynorman']
+    ]
     def issueManagement = [system: 'GitHub', url: 'https://github.com/stokito/grails-locale-configuration-plugin/issues']
     def scm = [url: 'https://github.com/stokito/grails-locale-configuration-plugin'] //TODO http://svn.codehaus.org/grails-plugins/
 
