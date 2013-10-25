@@ -114,12 +114,12 @@ class SmartConfigLocaleResolverSpec extends Specification {
     void 'findPreferredSupportedLocale()'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = [Locale.ENGLISH, Locale.US, Locale.CANADA, Locale.UK]
-        List<Locale> userPreferredLocales = [Locale.UK, Locale.ENGLISH]
-        when:
-        Locale preferredSupportedLocale = resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
-        then:
-        preferredSupportedLocale == Locale.UK
+        resolver.supportedLocales = supportedLocales
+        expect:
+        preferredSupportedLocale == resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
+        where:
+        supportedLocales                                      | userPreferredLocales        | preferredSupportedLocale
+        [Locale.ENGLISH, Locale.US, Locale.CANADA, Locale.UK] | [Locale.UK, Locale.ENGLISH] | Locale.UK
     }
 
 }
