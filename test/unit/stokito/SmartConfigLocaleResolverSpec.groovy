@@ -123,6 +123,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.US, Locale.ENGLISH]     | Locale.US
         [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.ENGLISH]                | Locale.ENGLISH
         [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA, Locale.ENGLISH] | Locale.ENGLISH
+        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA, Locale.US]      | Locale.US
     }
 
 }
