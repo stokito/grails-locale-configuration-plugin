@@ -55,6 +55,28 @@ class SmartConfigLocaleResolverSpec extends Specification {
         resolvedLocale == CONFIGURED_DEFAULT_LOCALE
     }
 
+    void 'resolveLocale() should return user requested locale if it supported'() {
+        given:
+        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
+        resolver.supportedLocales = [Locale.GERMANY]
+        request.addPreferredLocale(Locale.GERMANY)
+        when:
+        Locale resolvedLocale = resolver.resolveLocale(request)
+        then:
+        resolvedLocale == Locale.GERMANY
+    }
+
+    void 'resolveLocale() should return locale with same language if user requested locale that supported only partially by language'() {
+        given:
+        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
+        resolver.supportedLocales = [Locale.GERMAN]
+        request.addPreferredLocale(Locale.GERMANY)
+        when:
+        Locale resolvedLocale = resolver.resolveLocale(request)
+        then:
+        resolvedLocale == Locale.GERMAN
+    }
+
 
 }
 
