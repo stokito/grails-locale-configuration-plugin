@@ -25,7 +25,7 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
         if (localeSavedToSession) {
             return localeSavedToSession
         }
-        Locale selectedLocale = findPreferredSupportedLocale(request.locales.toList())
+        Locale selectedLocale = findFirstPreferredSupportedLocale(request.locales.toList())
         if (!selectedLocale) {
             selectedLocale = determineDefaultLocale(request);
         }
@@ -33,8 +33,13 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
 
     }
 
-    Locale findPreferredSupportedLocale(List<Locale> userPreferredLocales) {
+    Locale findFirstPreferredSupportedLocale(List<Locale> userPreferredLocales) {
         Locale localeDesiredByUser = userPreferredLocales[0]
+        Locale preferredSupportedLocale = findPreferredSupportedLocale(localeDesiredByUser)
+        return preferredSupportedLocale
+    }
+
+    Locale findPreferredSupportedLocale(Locale localeDesiredByUser) {
         Locale preferredSupportedLocale
         if (localeIsSupported(localeDesiredByUser)) {
             preferredSupportedLocale = localeDesiredByUser
