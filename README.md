@@ -16,7 +16,7 @@ You need change BuildConfig.groovy and add new repository and install plugin dep
         }
         plugins {
             ...
-            compile 'name.stokito:grails-locale-configuration-plugin:0.1'
+            compile 'name.stokito:grails-locale-configuration-plugin:0.2'
         }
     }
 
