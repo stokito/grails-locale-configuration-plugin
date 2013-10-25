@@ -20,3 +20,9 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+// Supported locales
+name.stokito.smartLocaleResolver.supportedLocales = [Locale.ENGLISH, Locale.GERMAN]
+
+// Default locale (e.g. if requested locale is not supported)
+name.stokito.smartLocaleResolver.defaultLocale = Locale.ENGLISH
