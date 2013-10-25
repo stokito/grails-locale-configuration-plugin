@@ -48,7 +48,7 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
         return localeSavedToSession
     }
 
-    private Locale findLocaleWithSameLanguage(Locale localeDesiredByUser) {
+    Locale findLocaleWithSameLanguage(Locale localeDesiredByUser) {
         Locale localeWithSameLanguage = supportedLocales.find({ it.language == localeDesiredByUser.language })
         return localeWithSameLanguage
     }
