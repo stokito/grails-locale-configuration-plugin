@@ -41,11 +41,15 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
 
     Locale findPreferredSupportedLocale(Locale localeDesiredByUser) {
         Locale preferredSupportedLocale
-        if (localeIsSupported(localeDesiredByUser)) {
-            preferredSupportedLocale = localeDesiredByUser
-        } else {
+        preferredSupportedLocale = findPreferredSupportedLocaleByLanguageAndCountry(localeDesiredByUser)
+        if (!preferredSupportedLocale) {
             preferredSupportedLocale = findSupportedLocaleWithSameLanguage(localeDesiredByUser)
         }
+        return preferredSupportedLocale
+    }
+
+    Locale findPreferredSupportedLocaleByLanguageAndCountry(Locale localeDesiredByUser) {
+        Locale preferredSupportedLocale = localeIsSupported(localeDesiredByUser) ? localeDesiredByUser : null
         return preferredSupportedLocale
     }
 
