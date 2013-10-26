@@ -1,8 +1,7 @@
-package stokito
+package name.stokito
 
 import grails.test.mixin.TestMixin
 import grails.test.mixin.web.ControllerUnitTestMixin
-import name.stokito.SmartConfigLocaleResolver
 import spock.lang.Specification
 import spock.lang.Unroll
 

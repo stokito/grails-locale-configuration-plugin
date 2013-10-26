@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package stokito
+package name.stokito
 
-import name.stokito.SmartConfigLocaleResolver
+import junit.framework.TestCase
+import org.springframework.mock.web.MockHttpServletRequest
+import org.springframework.mock.web.MockHttpServletResponse
 
-import javax.servlet.http.HttpSession;
-
-import junit.framework.TestCase;
-
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import javax.servlet.http.HttpSession
 
 /**
  * SmartConfigLocaleResolver extends SessionLocaleResolverTests so it should keep contract of superclass.
