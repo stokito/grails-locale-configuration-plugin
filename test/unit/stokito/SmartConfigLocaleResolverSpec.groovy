@@ -161,7 +161,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.ENGLISH     | Locale.ENGLISH            | Locale.ENGLISH
         [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.CANADA      | Locale.ENGLISH            | Locale.ENGLISH // newLocale partially supported by language
         [Locale.ENGLISH, Locale.US, Locale.UK] | CONFIGURED_DEFAULT_LOCALE | UNSUPPORTED_LOCALE | CONFIGURED_DEFAULT_LOCALE | CONFIGURED_DEFAULT_LOCALE      // newLocale unsupported, returned default language
-        [Locale.ENGLISH, Locale.US, Locale.UK] | null                      | Locale.CANADA      | LOCALE_FROM_USER_REQUEST  | LOCALE_FROM_USER_REQUEST      // newLocale unsupported, returned default language
+        [Locale.ENGLISH, Locale.US, Locale.UK] | null                      | UNSUPPORTED_LOCALE | UNSUPPORTED_LOCALE        | UNSUPPORTED_LOCALE      // newLocale unsupported, but default isn't set, returned newLocale
     }
 }
 
