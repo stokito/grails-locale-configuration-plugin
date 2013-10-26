@@ -23,7 +23,7 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
         Locale localeSavedToSession = getLocaleSavedToSession(request);
-        if (localeSavedToSession) {
+        if (localeSavedToSession && localeIsSupported(localeSavedToSession)) {
             return localeSavedToSession
         }
         Locale selectedLocale = findFirstPreferredSupportedLocale(request.locales.toList())
