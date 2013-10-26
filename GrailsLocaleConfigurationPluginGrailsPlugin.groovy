@@ -28,9 +28,4 @@ The plugin allows you to specify supported languages and a default language, e.g
         }
     }
 
-    def doWithApplicationContext = { applicationContext ->
-        application.config.name.stokito.smartLocaleResolver.supportedLocales = [Locale.ENGLISH, Locale.GERMAN]
-        application.config.name.stokito.smartLocaleResolver.defaultLocale = Locale.ENGLISH
-    }
-
 }
