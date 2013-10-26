@@ -4,12 +4,14 @@ import grails.test.mixin.TestMixin
 import grails.test.mixin.web.ControllerUnitTestMixin
 import name.stokito.SmartConfigLocaleResolver
 import spock.lang.Specification
+import spock.lang.Unroll
 
 @TestMixin(ControllerUnitTestMixin)
 class SmartConfigLocaleResolverSpec extends Specification {
     static final Locale UNSUPPORTED_LOCALE = new Locale('xx')
     static final Locale ANY_LOCALE = new Locale('yy')
     static final Locale CONFIGURED_DEFAULT_LOCALE = new Locale('zz')
+    static final Locale LOCALE_FROM_USER_REQUEST = new Locale('rr')
 
     void 'resolveLocale() should return user requested locale if not configured: supportedLocales is empty list'() {
         given:
@@ -127,13 +129,34 @@ class SmartConfigLocaleResolverSpec extends Specification {
         preferredSupportedLocale == resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
         where:
         supportedLocales                       | userPreferredLocales            | preferredSupportedLocale
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.UK, Locale.ENGLISH]     | Locale.UK
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.US, Locale.ENGLISH]     | Locale.US
+        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.UK, Locale.ENGLISH]     | Locale.UK    // returned first preferred locale
+        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.US, Locale.ENGLISH]     | Locale.US    // returned first preferred locale
         [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.ENGLISH]                | Locale.ENGLISH
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA, Locale.ENGLISH] | Locale.ENGLISH
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA, Locale.US]      | Locale.US
+        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA, Locale.ENGLISH] | Locale.ENGLISH // returned second preferred locale
+        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA, Locale.US]      | Locale.US      // returned second preferred locale
+        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA, Locale.UK]      | Locale.UK      // returned second preferred locale
+        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA]                 | Locale.ENGLISH // CANADA partially supported by language ENGLISH
     }
 
+    @Unroll('#supportedLocales, #defaultLocale, #newLocale, #preferredSupportedLocale')
+    void 'setLocale() with unsupported locale should set resolved supported locale'() {
+        given:
+        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
+        resolver.supportedLocales = supportedLocales
+        resolver.defaultLocale = defaultLocale
+        request.setPreferredLocales([LOCALE_FROM_USER_REQUEST])
+        resolver.setLocale(request, response, newLocale)
+        expect:
+        preferredSupportedLocale == resolver.resolveLocale(request)
+        where:
+        supportedLocales                       | defaultLocale             | newLocale      | preferredSupportedLocale
+        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.UK      | Locale.UK
+        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.US      | Locale.US
+        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.ENGLISH | Locale.ENGLISH
+        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.CANADA  | Locale.ENGLISH // newLocale partially supported by language
+        [Locale.ENGLISH, Locale.US, Locale.UK] | CONFIGURED_DEFAULT_LOCALE | Locale.CANADA  | Locale.US      // newLocale unsupported, returned default language
+        [Locale.ENGLISH, Locale.US, Locale.UK] | null                      | Locale.CANADA  | LOCALE_FROM_USER_REQUEST      // newLocale unsupported, returned default language
+    }
 }
 
 
