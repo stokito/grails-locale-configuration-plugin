@@ -1,9 +1,12 @@
 Grails Locale Configuration Plugin
 ==================================
 
-[Grails Locale Configuration Plugin] (https://github.com/stokito/grails-locale-configuration-plugin) to enhance the handling of the Grails localization (i18n).
+[Grails Locale Configuration Plugin] (https://github.com/stokito/grails-locale-configuration-plugin) enhances the handling of Grails localization (i18n).
 
-The plugin allows you to define supported languages and a default language, e.g. if the requested language (lang parameter or HTTP-Accept-Language-Header) is not supported.
+This plugin is intended to enhance the language support in Grails by detecting your users’ locale and selecting the most appropriate language for them.
+You can specify a list of supported languages and choose which language to use if a client’s preferred language is not available.
+
+For example, if your site supports only English, Russian and German, you can send users with other locales to the default language (English).
 
 Installation
 ================
@@ -27,8 +30,8 @@ Please add the following repository and dependency to your BuildConfig.groovy:
 
 Configuration
 =============
-By default English and German are defined as supported locales and English is default.
-If you want to change it, add the following lines to your Config.groovy.
+By default, English and German are defined as supported locales, and English is set as the default locale.
+If you want to change this, add the following lines to your Config.groovy.
 
 NOTE: The default locale should also be in the list of the supported locales...
 
@@ -38,10 +41,10 @@ NOTE: The default locale should also be in the list of the supported locales...
 Locales priority
 ================
 1. Language Param in the URL (request), e.g. http://www.example.net?lang=en
-2. First locale from the HTTP-Accept-Language-Header
+2. First match of the locales from the HTTP-Accept-Language-Header
 3. Default locale (Config.groovy)
 
-NOTE: This order is important and not changeable to support switching languages (e.g. language selector)
+NOTE: This order is important and cannot be changed. You may want to provide a language selector, so the lang param should have the highest priority.
 
 [Take a look into specification for more details](/test/unit/stokito/SmartConfigLocaleResolverSpec.groovy)
 
