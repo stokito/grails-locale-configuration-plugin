@@ -6,12 +6,13 @@ import org.springframework.web.util.WebUtils
 import javax.servlet.http.HttpServletRequest
 
 /**
+ *
  * Locale resolver that can limit choice user preferred language.
- * You can define bean of this resolver in resouces.groovy:
+ * You can define bean of this resolver in resources.groovy:
  *
  *  localeResolver(SmartConfigLocaleResolver) {
- *      supportedLocales = application.config.supportedLocales ?: []
- *      defaultLocale = application.config.defaultLocale ?: null
+ *      supportedLocales = application.config.name.stokito.smartLocaleResolver.supportedLocales ?: []
+ *      defaultLocale = application.config.name.stokito.smartLocaleResolver.defaultLocale ?: null
  *  }
  *
  */
@@ -29,7 +30,7 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
 
     Locale findFirstPreferredSupportedLocaleByLanguage(List<Locale> userPreferredLocales) {
         for (Locale preferredLocale : userPreferredLocales) {
-            Locale supportedByLanguageLocale = supportedLocales?.find( { supportedLocale -> supportedLocale.language == preferredLocale.language} )
+            Locale supportedByLanguageLocale = supportedLocales?.find({ supportedLocale -> supportedLocale.language == preferredLocale.language })
             if (supportedByLanguageLocale) {
                 return supportedByLanguageLocale
             }
@@ -42,7 +43,7 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
     }
 
     boolean localeIsSupported(Locale localeDesiredByUser) {
-       return supportedLocales?.contains(localeDesiredByUser)
+        return supportedLocales?.contains(localeDesiredByUser)
     }
 
     @Override

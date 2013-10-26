@@ -8,14 +8,14 @@ class GrailsLocaleConfigurationPluginGrailsPlugin {
     String author = 'Sergey Ponomarev'
     String authorEmail = 'stokito@gmail.com'
     def description = '''\
-This plugin intended to control the language support in Grails. Your site may support only few languages.
-You can allow only supported languages. For example: English, Russian and German, and all other languages should be forced to English.
+Smart locale resolver to enhance the handling of the Grails localization (i18n).
+The plugin allows you to specify supported languages and a default language, e.g. if the requested language is not supported.
 '''
     String documentation = 'http://grails.org/plugin/grails-locale-configuration-plugin' //TODO http://grails.org/plugin/grails-locale-configuration-plugin
     String license = 'APACHE'
     List developers = [
             [name: 'Sergey Ponomarev', email: 'stokito@gmail.com'],
-            [name: 'Barry Norman', email: 'mail@barrynorman']
+            [name: 'Barry Norman', email: 'mail@barrynorman.de']
     ]
     def issueManagement = [system: 'GitHub', url: 'https://github.com/stokito/grails-locale-configuration-plugin/issues']
     def scm = [url: 'https://github.com/stokito/grails-locale-configuration-plugin'] //TODO http://svn.codehaus.org/grails-plugins/
@@ -23,8 +23,8 @@ You can allow only supported languages. For example: English, Russian and German
     List loadAfter = ['i18n']
     def doWithSpring = {
         localeResolver(SmartConfigLocaleResolver) {
-            supportedLocales = application.config.supportedLocales ?: []
-            defaultLocale = application.config.defaultLocale ?: null
+            supportedLocales = application.config.name.stokito.smartLocaleResolver.supportedLocales ?: []
+            defaultLocale = application.config.name.stokito.smartLocaleResolver.defaultLocale ?: null
         }
     }
 
