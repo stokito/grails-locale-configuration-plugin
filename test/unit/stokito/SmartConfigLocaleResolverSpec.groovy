@@ -12,6 +12,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
     static final Locale ANY_LOCALE = new Locale('yy')
     static final Locale CONFIGURED_DEFAULT_LOCALE = new Locale('zz')
     static final Locale LOCALE_FROM_USER_REQUEST = new Locale('rr')
+    static final Locale IGNORED_LOCALE = new Locale('ii')
 
     void 'resolveLocale() should return user requested locale if not configured: supportedLocales is empty list'() {
         given:
@@ -138,7 +139,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA]                 | Locale.ENGLISH // CANADA partially supported by language ENGLISH
     }
 
-    @Unroll('#supportedLocales, #defaultLocale, #newLocale, #preferredSupportedLocale')
+    @Unroll('#supportedLocales, #defaultLocale, #newLocale, #localeSavedToSession, #preferredSupportedLocale')
     void 'setLocale() with unsupported locale should set resolved supported locale'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
@@ -150,17 +151,17 @@ class SmartConfigLocaleResolverSpec extends Specification {
         // reset all to null for be sure that locale was got from session
         resolver.supportedLocales = null
         resolver.defaultLocale = null
-        request.setPreferredLocales([UNSUPPORTED_LOCALE])
+        request.setPreferredLocales([IGNORED_LOCALE])
         expect:
         preferredSupportedLocale == resolver.resolveLocale(request)
         where:
-        supportedLocales                       | defaultLocale             | newLocale      | localeSavedToSession     | preferredSupportedLocale
-        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.UK      | Locale.UK                | Locale.UK
-        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.US      | Locale.US                | Locale.US
-        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.ENGLISH | Locale.ENGLISH           | Locale.ENGLISH
-        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.CANADA  | Locale.ENGLISH           | Locale.ENGLISH // newLocale partially supported by language
-        [Locale.ENGLISH, Locale.US, Locale.UK] | CONFIGURED_DEFAULT_LOCALE | Locale.CANADA  | Locale.US                | Locale.US      // newLocale unsupported, returned default language
-        [Locale.ENGLISH, Locale.US, Locale.UK] | null                      | Locale.CANADA  | LOCALE_FROM_USER_REQUEST | LOCALE_FROM_USER_REQUEST      // newLocale unsupported, returned default language
+        supportedLocales                       | defaultLocale             | newLocale          | localeSavedToSession      | preferredSupportedLocale
+        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.UK          | Locale.UK                 | Locale.UK
+        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.US          | Locale.US                 | Locale.US
+        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.ENGLISH     | Locale.ENGLISH            | Locale.ENGLISH
+        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.CANADA      | Locale.ENGLISH            | Locale.ENGLISH // newLocale partially supported by language
+        [Locale.ENGLISH, Locale.US, Locale.UK] | CONFIGURED_DEFAULT_LOCALE | UNSUPPORTED_LOCALE | CONFIGURED_DEFAULT_LOCALE | CONFIGURED_DEFAULT_LOCALE      // newLocale unsupported, returned default language
+        [Locale.ENGLISH, Locale.US, Locale.UK] | null                      | Locale.CANADA      | LOCALE_FROM_USER_REQUEST  | LOCALE_FROM_USER_REQUEST      // newLocale unsupported, returned default language
     }
 }
 

@@ -1,9 +1,9 @@
 package name.stokito
 
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
-import org.springframework.web.util.WebUtils
 
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 /**
  *
@@ -48,10 +48,21 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
 
     @Override
     protected Locale determineDefaultLocale(HttpServletRequest request) {
-        Locale selectedLocale = findFirstPreferredSupportedLocale(request.locales.toList())
-        if (selectedLocale) {
-            return selectedLocale
+        return determineBestLocale(request.locales.toList())
+    }
+
+    def Locale determineBestLocale(List<Locale> requestedLocales) {
+        Locale selectedLocale = findFirstPreferredSupportedLocale(requestedLocales)
+        if (!selectedLocale) {
+            Locale mainRequestdLocale = requestedLocales[0]
+            selectedLocale = defaultLocale ?: mainRequestdLocale
         }
-        return super.determineDefaultLocale(request);
+        return selectedLocale
+    }
+
+    @Override
+    void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
+        Locale selectedLocale = determineBestLocale([locale])
+        super.setLocale(request, response, selectedLocale)
     }
 }
