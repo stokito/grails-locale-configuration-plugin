@@ -1,12 +1,11 @@
-package stokito
+//package name.stokito
 
 /*
  * From Coeus web framework
  * Licensed under the Apache License, Version 2.0.
  * Author: Spiros Tzavellas
  */
-
-import java.util.Locale
+/*
 import org.junit.Test
 import org.junit.Assert._
 import org.springframework.mock.web.MockHttpServletRequest
@@ -46,3 +45,4 @@ class SessionLocaleResolverTest {
         assertEquals(defaultLocale, resolver.resolve(request))
     }
 }
+*/
