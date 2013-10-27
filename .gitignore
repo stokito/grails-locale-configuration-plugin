@@ -14,12 +14,7 @@ atlassian-ide-plugin.xml
 target/
 
 # Unused web-app files
-web-app/WEB-INF/
-web-app/images/
-web-app/js/
-web-app/css/errors.css
-web-app/css/main.css
-web-app/css/mobile.css
+web-app
 
 docs/
 plugin.xml
@@ -27,4 +22,3 @@ plugin.xml
 
 # Unused grails files
 grails-app/i18n/
-grails-app/conf/UrlMappings.groovy
