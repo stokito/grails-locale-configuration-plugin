@@ -23,7 +23,7 @@ Please add the following repository and dependency to your BuildConfig.groovy:
 
         plugins {
             ...
-            compile 'name.stokito:grails-locale-configuration-plugin:0.2'
+            compile 'name.stokito:grails-locale-configuration-plugin:0.3'
         }
 
     }
@@ -41,8 +41,8 @@ NOTE: The default locale should also be in the list of the supported locales...
 Locales priority
 ================
 1. Language Param in the URL (request), e.g. http://www.example.net?lang=en
-2. First match of the locales from the HTTP-Accept-Language-Header
-3. Default locale (Config.groovy)
+2. First match of the locales from the HTTP Accept-Language header
+3. Default locale (defaultLocale option in Config.groovy)
 
 NOTE: This order is important and cannot be changed. You may want to provide a language selector, so the lang param should have the highest priority.
 
@@ -69,6 +69,6 @@ For any questions feel free to contact me:
  * stokito@gmail.com
  * skype: stokito
  * https://linkedin.com/in/stokito
- * Sergey Ponomarev
+ * [Sergey Ponomarev](http://stokito.wordpress.com/)
 
-Thanks to Barry Norman for contribution.
+Thanks to [Barry Norman](https://github.com/jigsawIV) for contribution.
