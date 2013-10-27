@@ -3,7 +3,7 @@ import name.stokito.SmartConfigLocaleResolver
 class LocaleConfigurationGrailsPlugin {
     String groupId = 'name.stokito'
     String version = '0.3'
-    String grailsVersion = '2.3 > *'
+    String grailsVersion = '2.0 > *'
     String title = 'Grails Locale Configuration Plugin'
     String author = 'Sergey Ponomarev'
     String authorEmail = 'stokito@gmail.com'
