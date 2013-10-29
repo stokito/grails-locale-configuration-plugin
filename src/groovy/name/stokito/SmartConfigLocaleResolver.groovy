@@ -20,6 +20,19 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
 
     List<Locale> supportedLocales
 
+    @Override
+    protected Locale determineDefaultLocale(HttpServletRequest request) {
+        return determineBestLocale(request.locales.toList())
+    }
+
+    @Override
+    void setLocale(HttpServletRequest request, HttpServletResponse response, Locale newLocale) {
+        List<Locale> userPreferredLocales = [newLocale]
+        userPreferredLocales.addAll(request.locales.toList())
+        Locale selectedLocale = determineBestLocale(userPreferredLocales)
+        super.setLocale(request, response, selectedLocale)
+    }
+
     Locale findFirstPreferredSupportedLocale(List<Locale> userPreferredLocales) {
         Locale preferredSupportedLocale = findFirstPreferredSupportedLocaleByLanguageAndCountry(userPreferredLocales)
         if (!preferredSupportedLocale) {
@@ -46,11 +59,6 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
         return supportedLocales?.contains(localeDesiredByUser)
     }
 
-    @Override
-    protected Locale determineDefaultLocale(HttpServletRequest request) {
-        return determineBestLocale(request.locales.toList())
-    }
-
     def Locale determineBestLocale(List<Locale> requestedLocales) {
         Locale selectedLocale = findFirstPreferredSupportedLocale(requestedLocales)
         if (!selectedLocale) {
@@ -60,11 +68,4 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
         return selectedLocale
     }
 
-    @Override
-    void setLocale(HttpServletRequest request, HttpServletResponse response, Locale newLocale) {
-        List<Locale> userPreferredLocales = [newLocale]
-        userPreferredLocales.addAll(request.locales.toList())
-        Locale selectedLocale = determineBestLocale(userPreferredLocales)
-        super.setLocale(request, response, selectedLocale)
-    }
 }
