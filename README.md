@@ -46,7 +46,7 @@ Locales priority
 
 NOTE: This order is important and cannot be changed. You may want to provide a language selector, so the lang param should have the highest priority.
 
-[Take a look into specification for more details](/test/unit/stokito/SmartConfigLocaleResolverSpec.groovy)
+[Take a look into specification for more details](/test/unit/name/stokito/SmartConfigLocaleResolverSpec.groovy)
 
 Running application example
 ================================
