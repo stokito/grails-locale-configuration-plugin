@@ -82,7 +82,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
     void 'findFirstPreferredSupportedLocaleByLanguage()'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = [GERMAN, ITALY]
+        resolver.supportedLocales = [GERMAN, ANY_LOCALE]
         when:
         Locale supportedLocaleWithSameLanguage = resolver.findFirstPreferredSupportedLocaleByLanguage([GERMANY])
         then:
@@ -92,7 +92,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
     void 'findFirstPreferredSupportedLocaleByLanguageAndCountry()'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = [GERMAN, GERMANY, ITALY]
+        resolver.supportedLocales = [GERMAN, GERMANY, ANY_LOCALE]
         when:
         Locale supportedLocaleWithSameLanguage = resolver.findFirstPreferredSupportedLocaleByLanguageAndCountry([GERMANY])
         then:
