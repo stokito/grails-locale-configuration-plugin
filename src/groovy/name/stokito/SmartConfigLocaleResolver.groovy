@@ -1,5 +1,6 @@
 package name.stokito
 
+import groovy.transform.TypeChecked
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
 
 import javax.servlet.http.HttpServletRequest
@@ -16,20 +17,21 @@ import javax.servlet.http.HttpServletResponse
  *  }
  *
  */
+@TypeChecked
 class SmartConfigLocaleResolver extends SessionLocaleResolver {
 
     List<Locale> supportedLocales
 
     @Override
     protected Locale determineDefaultLocale(HttpServletRequest request) {
-        return determineBestLocale(request.locales.toList())
+        return determineBestLocale(request.locale, request.locales.toList())
     }
 
     @Override
     void setLocale(HttpServletRequest request, HttpServletResponse response, Locale newLocale) {
         List<Locale> userPreferredLocales = [newLocale]
         userPreferredLocales.addAll(request.locales.toList())
-        Locale selectedLocale = determineBestLocale(userPreferredLocales)
+        Locale selectedLocale = determineBestLocale(newLocale, userPreferredLocales)
         super.setLocale(request, response, selectedLocale)
     }
 
@@ -43,7 +45,9 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
 
     Locale findFirstPreferredSupportedLocaleByLanguage(List<Locale> userPreferredLocales) {
         for (Locale preferredLocale : userPreferredLocales) {
-            Locale supportedByLanguageLocale = supportedLocales?.find({ supportedLocale -> supportedLocale.language == preferredLocale.language })
+            Locale supportedByLanguageLocale = supportedLocales?.find({ Locale supportedLocale ->
+                supportedLocale.language == preferredLocale.language
+            })
             if (supportedByLanguageLocale) {
                 return supportedByLanguageLocale
             }
@@ -52,17 +56,18 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
     }
 
     Locale findFirstPreferredSupportedLocaleByLanguageAndCountry(List<Locale> userPreferredLocales) {
-        userPreferredLocales.find({ preferredLocale -> localeIsSupported(preferredLocale) })
+        userPreferredLocales.find({ Locale preferredLocale ->
+            localeIsSupported(preferredLocale)
+        })
     }
 
     boolean localeIsSupported(Locale localeDesiredByUser) {
         return supportedLocales?.contains(localeDesiredByUser)
     }
 
-    Locale determineBestLocale(List<Locale> requestedLocales) {
+    Locale determineBestLocale(Locale mainRequestedLocale, List<Locale> requestedLocales) {
         Locale selectedLocale = findFirstPreferredSupportedLocale(requestedLocales)
         if (!selectedLocale) {
-            Locale mainRequestedLocale = requestedLocales[0]
             selectedLocale = defaultLocale ?: mainRequestedLocale
         }
         return selectedLocale
