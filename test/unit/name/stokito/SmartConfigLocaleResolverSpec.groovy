@@ -5,13 +5,7 @@ import grails.test.mixin.web.ControllerUnitTestMixin
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static java.util.Locale.CANADA
-import static java.util.Locale.ENGLISH
-import static java.util.Locale.GERMAN
-import static java.util.Locale.GERMANY
-import static java.util.Locale.ITALY
-import static java.util.Locale.UK
-import static java.util.Locale.US
+import static java.util.Locale.*
 
 @TestMixin(ControllerUnitTestMixin)
 class SmartConfigLocaleResolverSpec extends Specification {
@@ -136,14 +130,14 @@ class SmartConfigLocaleResolverSpec extends Specification {
         expect:
         preferredSupportedLocale == resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
         where:
-        supportedLocales                       | userPreferredLocales            | preferredSupportedLocale
-        [ENGLISH, US, UK] | [UK, ENGLISH]     | UK    // returned first preferred locale
-        [ENGLISH, US, UK] | [US, ENGLISH]     | US    // returned first preferred locale
-        [ENGLISH, US, UK] | [ENGLISH]                | ENGLISH
-        [ENGLISH, US, UK] | [CANADA, ENGLISH] | ENGLISH // returned second preferred locale
-        [ENGLISH, US, UK] | [CANADA, US]      | US      // returned second preferred locale
-        [ENGLISH, US, UK] | [CANADA, UK]      | UK      // returned second preferred locale
-        [ENGLISH, US, UK] | [CANADA]                 | ENGLISH // CANADA partially supported by language ENGLISH
+        supportedLocales  | userPreferredLocales | preferredSupportedLocale
+        [ENGLISH, US, UK] | [UK, ENGLISH]        | UK    // returned first preferred locale
+        [ENGLISH, US, UK] | [US, ENGLISH]        | US    // returned first preferred locale
+        [ENGLISH, US, UK] | [ENGLISH]            | ENGLISH
+        [ENGLISH, US, UK] | [CANADA, ENGLISH]    | ENGLISH // returned second preferred locale
+        [ENGLISH, US, UK] | [CANADA, US]         | US      // returned second preferred locale
+        [ENGLISH, US, UK] | [CANADA, UK]         | UK      // returned second preferred locale
+        [ENGLISH, US, UK] | [CANADA]             | ENGLISH // CANADA partially supported by language ENGLISH
     }
 
     @Unroll('#supportedLocales, #defaultLocale, #newLocale, #localeSavedToSession, #preferredSupportedLocale')
@@ -162,11 +156,11 @@ class SmartConfigLocaleResolverSpec extends Specification {
         expect:
         preferredSupportedLocale == resolver.resolveLocale(request)
         where:
-        supportedLocales                       | defaultLocale             | newLocale          | userPreferredLocales | localeSavedToSession      | preferredSupportedLocale
-        [ENGLISH, US, UK] | ANY_LOCALE                | UK          | [ANY_LOCALE]         | UK                 | UK
-        [ENGLISH, US, UK] | ANY_LOCALE                | US          | [ANY_LOCALE]         | US                 | US
-        [ENGLISH, US, UK] | ANY_LOCALE                | ENGLISH     | [ANY_LOCALE]         | ENGLISH            | ENGLISH
-        [ENGLISH, US, UK] | ANY_LOCALE                | CANADA      | [ANY_LOCALE]         | ENGLISH            | ENGLISH // newLocale partially supported by language
+        supportedLocales  | defaultLocale             | newLocale          | userPreferredLocales | localeSavedToSession      | preferredSupportedLocale
+        [ENGLISH, US, UK] | ANY_LOCALE                | UK                 | [ANY_LOCALE]         | UK                        | UK
+        [ENGLISH, US, UK] | ANY_LOCALE                | US                 | [ANY_LOCALE]         | US                        | US
+        [ENGLISH, US, UK] | ANY_LOCALE                | ENGLISH            | [ANY_LOCALE]         | ENGLISH                   | ENGLISH
+        [ENGLISH, US, UK] | ANY_LOCALE                | CANADA             | [ANY_LOCALE]         | ENGLISH                   | ENGLISH // newLocale partially supported by language
         [ENGLISH, US, UK] | CONFIGURED_DEFAULT_LOCALE | UNSUPPORTED_LOCALE | [ANY_LOCALE]         | CONFIGURED_DEFAULT_LOCALE | CONFIGURED_DEFAULT_LOCALE      // newLocale unsupported, returned default language
         [ENGLISH, US, UK] | null                      | UNSUPPORTED_LOCALE | [ANY_LOCALE]         | UNSUPPORTED_LOCALE        | UNSUPPORTED_LOCALE      // newLocale unsupported, but default isn't set, returned newLocale
     }
