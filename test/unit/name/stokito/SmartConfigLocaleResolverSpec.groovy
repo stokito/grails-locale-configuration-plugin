@@ -147,24 +147,27 @@ class SmartConfigLocaleResolverSpec extends Specification {
         request.setPreferredLocales(userPreferredLocales)
         when:
         resolver.setLocale(request, response, newLocale)
-        localeSavedToSession == request.getSession().getAttribute(SmartConfigLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME)
+        Locale localeSavedToSession = (Locale) request.getSession().getAttribute(SmartConfigLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME)
         // reset all to null to ensure that locale was got from session
         resolver.supportedLocales = null
         resolver.defaultLocale = null
         request.setPreferredLocales([ANY_LOCALE])
         then:
+        localeSavedToSession == preferredSupportedLocale
         preferredSupportedLocale == resolver.resolveLocale(request)
         where:
-        configuredSupportedLocales | configuredDefaultLocale   | newLocale          | userPreferredLocales | localeSavedToSession      | preferredSupportedLocale  | comment
-        [ENGLISH, US, UK]          | ANY_LOCALE                | UK                 | [ANY_LOCALE]         | UK                        | UK                        | 'newLocale absolutely supported, all fine'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | US                 | [ANY_LOCALE]         | US                        | US                        | 'newLocale absolutely supported, all fine'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | ENGLISH            | [ANY_LOCALE]         | ENGLISH                   | ENGLISH                   | 'newLocale absolutely supported, all fine'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | CANADA             | [ANY_LOCALE]         | ENGLISH                   | ENGLISH                   | 'newLocale partially supported by language'
-        [ENGLISH, US, UK]          | CONFIGURED_DEFAULT_LOCALE | UNSUPPORTED_LOCALE | [ANY_LOCALE]         | CONFIGURED_DEFAULT_LOCALE | CONFIGURED_DEFAULT_LOCALE | 'newLocale unsupported, returned default language'
-        [ENGLISH, US, UK]          | null                      | UNSUPPORTED_LOCALE | [ANY_LOCALE]         | UNSUPPORTED_LOCALE        | UNSUPPORTED_LOCALE        | 'newLocale unsupported, but default is not set, returned newLocale'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [US]                 | US                        | US                        | 'from request.locales'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [UK]                 | UK                        | UK                        | 'from request.locales'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [CANADA]             | ENGLISH                   | ENGLISH                   | 'from request.locales, supported by language'
+        configuredSupportedLocales | configuredDefaultLocale   | newLocale          | userPreferredLocales | preferredSupportedLocale  | comment
+        [ENGLISH, US, UK]          | ANY_LOCALE                | UK                 | [ANY_LOCALE]         | UK                        | 'newLocale absolutely supported, all fine'
+        [ENGLISH, US, UK]          | ANY_LOCALE                | US                 | [ANY_LOCALE]         | US                        | 'newLocale absolutely supported, all fine'
+        [ENGLISH, US, UK]          | ANY_LOCALE                | ENGLISH            | [ANY_LOCALE]         | ENGLISH                   | 'newLocale absolutely supported, all fine'
+        [ENGLISH, US, UK]          | ANY_LOCALE                | CANADA             | [ANY_LOCALE]         | ENGLISH                   | 'newLocale partially supported by language'
+        [ENGLISH, US, UK]          | CONFIGURED_DEFAULT_LOCALE | UNSUPPORTED_LOCALE | [ANY_LOCALE]         | CONFIGURED_DEFAULT_LOCALE | 'newLocale unsupported, returned default language'
+        [ENGLISH, US, UK]          | null                      | UNSUPPORTED_LOCALE | [ANY_LOCALE]         | UNSUPPORTED_LOCALE        | 'newLocale unsupported, but default is not set, returned newLocale'
+        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [US]                 | US                        | 'from request.locales'
+        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [UK]                 | UK                        | 'from request.locales'
+        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [ENGLISH]            | ENGLISH                   | 'from request.locales'
+        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [ENGLISH, US]        | ENGLISH                   | 'from request.locales, selected first by priority'
+        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [CANADA]             | ENGLISH                   | 'from request.locales, supported by language'
     }
 }
 
