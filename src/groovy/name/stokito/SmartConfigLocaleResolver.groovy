@@ -61,8 +61,8 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
     }
 
     @Override
-    void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
-        Locale selectedLocale = determineBestLocale([locale])
+    void setLocale(HttpServletRequest request, HttpServletResponse response, Locale newLocale) {
+        Locale selectedLocale = determineBestLocale([newLocale])
         super.setLocale(request, response, selectedLocale)
     }
 }
