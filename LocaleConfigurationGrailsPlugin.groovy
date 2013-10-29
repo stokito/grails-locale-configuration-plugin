@@ -2,12 +2,14 @@ import name.stokito.SmartConfigLocaleResolver
 
 class LocaleConfigurationGrailsPlugin {
     String groupId = 'name.stokito'
-    String version = '0.3'
+    String version = '0.4'
     String grailsVersion = '2.0 > *'
     String title = 'Grails Locale Configuration Plugin'
     def description = '''\
 Smart locale resolver to enhance the handling of the Grails localization (i18n).
 The plugin allows you to specify supported languages and a default language, e.g. if the requested language is not supported.
+This plugin is intended to enhance the language support in Grails by detecting your users’ locale and selecting the most appropriate language for them.
+You can specify a list of supported languages and choose which language to use if a client’s preferred language is not available.
 '''
     String documentation = 'http://grails.org/plugin/locale-configuration'
     String license = 'APACHE'
