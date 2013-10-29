@@ -59,7 +59,7 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
         return supportedLocales?.contains(localeDesiredByUser)
     }
 
-    def Locale determineBestLocale(List<Locale> requestedLocales) {
+    Locale determineBestLocale(List<Locale> requestedLocales) {
         Locale selectedLocale = findFirstPreferredSupportedLocale(requestedLocales)
         if (!selectedLocale) {
             Locale mainRequestedLocale = requestedLocales[0]
