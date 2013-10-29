@@ -121,6 +121,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         preferredSupportedLocale == GERMANY
     }
 
+    @Unroll('#configuredDefaultLocale, #userPreferredLocales: resolved by #comment')
     void 'findPreferredSupportedLocale()'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
@@ -128,14 +129,14 @@ class SmartConfigLocaleResolverSpec extends Specification {
         expect:
         preferredSupportedLocale == resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
         where:
-        configuredDefaultLocale | userPreferredLocales | preferredSupportedLocale
-        [ENGLISH, US, UK]       | [UK, ENGLISH]        | UK    // returned first preferred locale
-        [ENGLISH, US, UK]       | [US, ENGLISH]        | US    // returned first preferred locale
-        [ENGLISH, US, UK]       | [ENGLISH]            | ENGLISH
-        [ENGLISH, US, UK]       | [CANADA, ENGLISH]    | ENGLISH // returned second preferred locale
-        [ENGLISH, US, UK]       | [CANADA, US]         | US      // returned second preferred locale
-        [ENGLISH, US, UK]       | [CANADA, UK]         | UK      // returned second preferred locale
-        [ENGLISH, US, UK]       | [CANADA]             | ENGLISH // CANADA partially supported by language ENGLISH
+        configuredDefaultLocale | userPreferredLocales | preferredSupportedLocale | comment
+        [ENGLISH, US, UK]       | [UK, ENGLISH]        | UK                       | 'returned first preferred locale'
+        [ENGLISH, US, UK]       | [US, ENGLISH]        | US                       | 'returned first preferred locale'
+        [ENGLISH, US, UK]       | [ENGLISH]            | ENGLISH                  | 'full match'
+        [ENGLISH, US, UK]       | [CANADA, ENGLISH]    | ENGLISH                  | 'returned second preferred locale'
+        [ENGLISH, US, UK]       | [CANADA, US]         | US                       | 'returned second preferred locale'
+        [ENGLISH, US, UK]       | [CANADA, UK]         | UK                       | 'returned second preferred locale'
+        [ENGLISH, US, UK]       | [CANADA]             | ENGLISH                  | 'CANADA partially supported by language ENGLISH'
     }
 
     @Unroll('#configuredDefaultLocale, #newLocale, #userPreferredLocales: resolved by #comment')
