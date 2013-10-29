@@ -5,6 +5,14 @@ import grails.test.mixin.web.ControllerUnitTestMixin
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import static java.util.Locale.CANADA
+import static java.util.Locale.ENGLISH
+import static java.util.Locale.GERMAN
+import static java.util.Locale.GERMANY
+import static java.util.Locale.ITALY
+import static java.util.Locale.UK
+import static java.util.Locale.US
+
 @TestMixin(ControllerUnitTestMixin)
 class SmartConfigLocaleResolverSpec extends Specification {
     static final Locale UNSUPPORTED_LOCALE = new Locale('xx')
@@ -60,65 +68,65 @@ class SmartConfigLocaleResolverSpec extends Specification {
     void 'resolveLocale() should return user requested locale if it supported'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = [Locale.GERMANY]
-        request.setPreferredLocales([Locale.GERMANY])
+        resolver.supportedLocales = [GERMANY]
+        request.setPreferredLocales([GERMANY])
         when:
         Locale resolvedLocale = resolver.resolveLocale(request)
         then:
-        resolvedLocale == Locale.GERMANY
+        resolvedLocale == GERMANY
     }
 
     void 'resolveLocale() should return locale with same language if user requested locale that supported only partially by language'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = [Locale.GERMAN]
-        request.setPreferredLocales([Locale.GERMANY])
+        resolver.supportedLocales = [GERMAN]
+        request.setPreferredLocales([GERMANY])
         when:
         Locale resolvedLocale = resolver.resolveLocale(request)
         then:
-        resolvedLocale == Locale.GERMAN
+        resolvedLocale == GERMAN
     }
 
     void 'findFirstPreferredSupportedLocaleByLanguage()'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = [Locale.GERMAN, Locale.ITALY]
+        resolver.supportedLocales = [GERMAN, ITALY]
         when:
-        Locale supportedLocaleWithSameLanguage = resolver.findFirstPreferredSupportedLocaleByLanguage([Locale.GERMANY])
+        Locale supportedLocaleWithSameLanguage = resolver.findFirstPreferredSupportedLocaleByLanguage([GERMANY])
         then:
-        supportedLocaleWithSameLanguage == Locale.GERMAN
+        supportedLocaleWithSameLanguage == GERMAN
     }
 
     void 'findFirstPreferredSupportedLocaleByLanguageAndCountry()'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = [Locale.GERMAN, Locale.GERMANY, Locale.ITALY]
+        resolver.supportedLocales = [GERMAN, GERMANY, ITALY]
         when:
-        Locale supportedLocaleWithSameLanguage = resolver.findFirstPreferredSupportedLocaleByLanguageAndCountry([Locale.GERMANY])
+        Locale supportedLocaleWithSameLanguage = resolver.findFirstPreferredSupportedLocaleByLanguageAndCountry([GERMANY])
         then:
-        supportedLocaleWithSameLanguage == Locale.GERMANY
+        supportedLocaleWithSameLanguage == GERMANY
     }
 
     void 'resolveLocale() should return supported locale that is first matching with user requested locales'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = [Locale.GERMANY]
-        request.setPreferredLocales([UNSUPPORTED_LOCALE, Locale.GERMANY])
+        resolver.supportedLocales = [GERMANY]
+        request.setPreferredLocales([UNSUPPORTED_LOCALE, GERMANY])
         when:
         Locale resolvedLocale = resolver.resolveLocale(request)
         then:
-        resolvedLocale == Locale.GERMANY
+        resolvedLocale == GERMANY
     }
 
     void 'findPreferredSupportedLocale() should return supported locale that is first matching with user requested locales'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = [Locale.GERMANY]
-        List<Locale> userPreferredLocales = [UNSUPPORTED_LOCALE, Locale.GERMANY]
+        resolver.supportedLocales = [GERMANY]
+        List<Locale> userPreferredLocales = [UNSUPPORTED_LOCALE, GERMANY]
         when:
         Locale preferredSupportedLocale = resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
         then:
-        preferredSupportedLocale == Locale.GERMANY
+        preferredSupportedLocale == GERMANY
     }
 
     void 'findPreferredSupportedLocale()'() {
@@ -129,13 +137,13 @@ class SmartConfigLocaleResolverSpec extends Specification {
         preferredSupportedLocale == resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
         where:
         supportedLocales                       | userPreferredLocales            | preferredSupportedLocale
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.UK, Locale.ENGLISH]     | Locale.UK    // returned first preferred locale
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.US, Locale.ENGLISH]     | Locale.US    // returned first preferred locale
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.ENGLISH]                | Locale.ENGLISH
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA, Locale.ENGLISH] | Locale.ENGLISH // returned second preferred locale
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA, Locale.US]      | Locale.US      // returned second preferred locale
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA, Locale.UK]      | Locale.UK      // returned second preferred locale
-        [Locale.ENGLISH, Locale.US, Locale.UK] | [Locale.CANADA]                 | Locale.ENGLISH // CANADA partially supported by language ENGLISH
+        [ENGLISH, US, UK] | [UK, ENGLISH]     | UK    // returned first preferred locale
+        [ENGLISH, US, UK] | [US, ENGLISH]     | US    // returned first preferred locale
+        [ENGLISH, US, UK] | [ENGLISH]                | ENGLISH
+        [ENGLISH, US, UK] | [CANADA, ENGLISH] | ENGLISH // returned second preferred locale
+        [ENGLISH, US, UK] | [CANADA, US]      | US      // returned second preferred locale
+        [ENGLISH, US, UK] | [CANADA, UK]      | UK      // returned second preferred locale
+        [ENGLISH, US, UK] | [CANADA]                 | ENGLISH // CANADA partially supported by language ENGLISH
     }
 
     @Unroll('#supportedLocales, #defaultLocale, #newLocale, #localeSavedToSession, #preferredSupportedLocale')
@@ -155,12 +163,12 @@ class SmartConfigLocaleResolverSpec extends Specification {
         preferredSupportedLocale == resolver.resolveLocale(request)
         where:
         supportedLocales                       | defaultLocale             | newLocale          | userPreferredLocales | localeSavedToSession      | preferredSupportedLocale
-        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.UK          | [ANY_LOCALE]         | Locale.UK                 | Locale.UK
-        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.US          | [ANY_LOCALE]         | Locale.US                 | Locale.US
-        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.ENGLISH     | [ANY_LOCALE]         | Locale.ENGLISH            | Locale.ENGLISH
-        [Locale.ENGLISH, Locale.US, Locale.UK] | ANY_LOCALE                | Locale.CANADA      | [ANY_LOCALE]         | Locale.ENGLISH            | Locale.ENGLISH // newLocale partially supported by language
-        [Locale.ENGLISH, Locale.US, Locale.UK] | CONFIGURED_DEFAULT_LOCALE | UNSUPPORTED_LOCALE | [ANY_LOCALE]         | CONFIGURED_DEFAULT_LOCALE | CONFIGURED_DEFAULT_LOCALE      // newLocale unsupported, returned default language
-        [Locale.ENGLISH, Locale.US, Locale.UK] | null                      | UNSUPPORTED_LOCALE | [ANY_LOCALE]         | UNSUPPORTED_LOCALE        | UNSUPPORTED_LOCALE      // newLocale unsupported, but default isn't set, returned newLocale
+        [ENGLISH, US, UK] | ANY_LOCALE                | UK          | [ANY_LOCALE]         | UK                 | UK
+        [ENGLISH, US, UK] | ANY_LOCALE                | US          | [ANY_LOCALE]         | US                 | US
+        [ENGLISH, US, UK] | ANY_LOCALE                | ENGLISH     | [ANY_LOCALE]         | ENGLISH            | ENGLISH
+        [ENGLISH, US, UK] | ANY_LOCALE                | CANADA      | [ANY_LOCALE]         | ENGLISH            | ENGLISH // newLocale partially supported by language
+        [ENGLISH, US, UK] | CONFIGURED_DEFAULT_LOCALE | UNSUPPORTED_LOCALE | [ANY_LOCALE]         | CONFIGURED_DEFAULT_LOCALE | CONFIGURED_DEFAULT_LOCALE      // newLocale unsupported, returned default language
+        [ENGLISH, US, UK] | null                      | UNSUPPORTED_LOCALE | [ANY_LOCALE]         | UNSUPPORTED_LOCALE        | UNSUPPORTED_LOCALE      // newLocale unsupported, but default isn't set, returned newLocale
     }
 }
 
