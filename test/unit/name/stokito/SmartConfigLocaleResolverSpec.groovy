@@ -147,13 +147,14 @@ class SmartConfigLocaleResolverSpec extends Specification {
         resolver.supportedLocales = configuredSupportedLocales
         resolver.defaultLocale = configuredDefaultLocale
         request.setPreferredLocales(userPreferredLocales)
+        when:
         resolver.setLocale(request, response, newLocale)
         localeSavedToSession == request.getSession().getAttribute(SmartConfigLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME)
         // reset all to null to ensure that locale was got from session
         resolver.supportedLocales = null
         resolver.defaultLocale = null
         request.setPreferredLocales([IGNORED_LOCALE])
-        expect:
+        then:
         preferredSupportedLocale == resolver.resolveLocale(request)
         where:
         configuredSupportedLocales | configuredDefaultLocale   | newLocale          | userPreferredLocales | localeSavedToSession      | preferredSupportedLocale
