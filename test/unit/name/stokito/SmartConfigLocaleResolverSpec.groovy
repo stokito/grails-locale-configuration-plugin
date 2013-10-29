@@ -9,11 +9,9 @@ import static java.util.Locale.*
 
 @TestMixin(ControllerUnitTestMixin)
 class SmartConfigLocaleResolverSpec extends Specification {
-    static final Locale UNSUPPORTED_LOCALE = new Locale('xx')
-    static final Locale ANY_LOCALE = new Locale('yy')
-    static final Locale CONFIGURED_DEFAULT_LOCALE = new Locale('zz')
-    static final Locale LOCALE_FROM_USER_REQUEST = new Locale('rr')
-    static final Locale IGNORED_LOCALE = new Locale('ii')
+    static final Locale UNSUPPORTED_LOCALE = new Locale('unsupported')
+    static final Locale ANY_LOCALE = new Locale('any')
+    static final Locale CONFIGURED_DEFAULT_LOCALE = new Locale('configured_default')
 
     void 'resolveLocale() should return user requested locale if not configured: supportedLocales is empty list'() {
         given:
@@ -140,7 +138,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         [ENGLISH, US, UK]       | [CANADA]             | ENGLISH // CANADA partially supported by language ENGLISH
     }
 
-    @Unroll('#supportedLocales, #defaultLocale, #newLocale, #localeSavedToSession, #preferredSupportedLocale')
+    @Unroll('#configuredDefaultLocale, #newLocale, #userPreferredLocales')
     void 'setLocale() with unsupported locale should set resolved supported locale'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
@@ -153,7 +151,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         // reset all to null to ensure that locale was got from session
         resolver.supportedLocales = null
         resolver.defaultLocale = null
-        request.setPreferredLocales([IGNORED_LOCALE])
+        request.setPreferredLocales([ANY_LOCALE])
         then:
         preferredSupportedLocale == resolver.resolveLocale(request)
         where:
