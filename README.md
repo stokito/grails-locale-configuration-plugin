@@ -35,7 +35,7 @@ Locales priority
 2. First match of the locales from the HTTP Accept-Language header
 3. Default locale (defaultLocale option in Config.groovy)
 
-NOTE: This order is important and cannot be changed. You may want to provide a language selector, so the lang param should have the highest priority.
+**NOTE:** This order is important and cannot be changed. You may want to provide a language selector, so the lang param should have the highest priority.
 
 [Take a look into specification for more details](/test/unit/name/stokito/SmartConfigLocaleResolverSpec.groovy)
 
@@ -43,7 +43,7 @@ Running application example
 ===========================
 Take a look at the demo to see the plugin in action: [Grails Locale Configuration Plugin demo application] (https://github.com/stokito/grails-locale-configuration-plugin-demo)
 
-NOTE: If you want to test your locales (languages), just add the locales to the Config.groovy as described in 'Configuration'.
+**NOTE:** If you want to test your locales (languages), just add the locales to the Config.groovy as described in 'Configuration'.
 
 Run demo, like every other Grails application
 
