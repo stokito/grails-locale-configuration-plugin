@@ -23,7 +23,7 @@ Please add the following repository and dependency to your BuildConfig.groovy:
 
         plugins {
             ...
-            compile 'name.stokito:grails-locale-configuration-plugin:0.4'
+            compile 'name.stokito:locale-configuration:0.4'
         }
 
     }
