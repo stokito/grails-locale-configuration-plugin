@@ -49,7 +49,7 @@ Run demo, like every other Grails application
     grails run-app
 {code}
 
-Application can be accessed by URL http://localhost:8080/
+Then application can be accessed by URL [http://localhost:8080/grails-locale-configuration-plugin-demo/]
 
 h2. Support
 For any questions feel free to contact me:
