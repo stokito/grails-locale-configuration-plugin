@@ -51,6 +51,8 @@ Run demo, like every other Grails application
 
 Then application can be accessed by URL [http://localhost:8080/grails-locale-configuration-plugin-demo/]
 
+[Screenshot of test stand|https://raw.github.com/stokito/grails-locale-configuration-plugin/master/screenshot.png]
+
 h2. Support
 For any questions feel free to contact me:
 
