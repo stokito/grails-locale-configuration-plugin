@@ -1,10 +1,5 @@
 grails.project.work.dir = 'target'
 
-grails.project.repos.default = 'bintray-stokito-maven-grails-locale-configuration-plugin'
-grails.project.repos.'bintray-stokito-maven-grails-locale-configuration-plugin'.url = 'https://api.bintray.com/maven/stokito/maven/grails-locale-configuration-plugin'
-grails.project.repos.'bintray-stokito-maven-grails-locale-configuration-plugin'.type = 'maven'
-grails.project.repos.'bintray-stokito-maven-grails-locale-configuration-plugin'.portal = 'stokitoBintray'
-
 grails.project.dependency.resolution = {
 
     inherits 'global'
