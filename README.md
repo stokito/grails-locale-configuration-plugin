@@ -44,7 +44,7 @@ Running application example
 ===========================
 Take a look at the demo to see the plugin in action: [Grails Locale Configuration Plugin demo application] (https://github.com/stokito/grails-locale-configuration-plugin-demo)
 
-NOTE: If you want to test your locales (languages), just add the locales to the Config.groovy as descriped in 'Configuration'.
+NOTE: If you want to test your locales (languages), just add the locales to the Config.groovy as described in 'Configuration'.
 
 Run demo, like every other Grails application
 
