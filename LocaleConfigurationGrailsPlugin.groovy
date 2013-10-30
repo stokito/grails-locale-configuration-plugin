@@ -1,8 +1,7 @@
 import name.stokito.SmartConfigLocaleResolver
 
 class LocaleConfigurationGrailsPlugin {
-    String groupId = 'name.stokito'
-    String version = '0.4'
+    String version = '1.0'
     String grailsVersion = '2.0 > *'
     String title = 'Grails Locale Configuration Plugin'
     def description = '''\
