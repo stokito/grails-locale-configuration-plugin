@@ -13,30 +13,22 @@ Installation
 Please add the following repository and dependency to your BuildConfig.groovy:
 
     grails.project.dependency.resolution = {
-
-        repositories {
-            ...
-            mavenRepo 'http://dl.bintray.com/stokito/maven'
-        }
-
         ...
-
         plugins {
             ...
-            compile 'name.stokito:grails-locale-configuration-plugin:0.4'
+            compile ':locale-configuration:1.0'
+            ...
         }
-
+        ...
     }
 
 Configuration
 =============
-By default, English and German are defined as supported locales, and English is set as the default locale.
-If you want to change this, add the following lines to your Config.groovy.
+Add the following lines to your Config.groovy.
 
-NOTE: The default locale should also be in the list of the supported locales...
-
-    name.stokito.smartLocaleResolver.supportedLocales = [Locale.ENGLISH, Locale.GERMAN]
-    name.stokito.smartLocaleResolver.defaultLocale = Locale.ENGLISH
+    // order is matters!
+    grails.plugins.localeConfiguration.supportedLocales = [Locale.GERMAN, Locale.ENGLISH]
+    grails.plugins.localeConfiguration.defaultLocale = Locale.ENGLISH
 
 Locales priority
 ================
@@ -49,7 +41,7 @@ NOTE: This order is important and cannot be changed. You may want to provide a l
 [Take a look into specification for more details](/test/unit/name/stokito/SmartConfigLocaleResolverSpec.groovy)
 
 Running application example
-================================
+===========================
 Take a look at the demo to see the plugin in action: [Grails Locale Configuration Plugin demo application] (https://github.com/stokito/grails-locale-configuration-plugin-demo)
 
 NOTE: If you want to test your locales (languages), just add the locales to the Config.groovy as descriped in 'Configuration'.
@@ -71,4 +63,4 @@ For any questions feel free to contact me:
  * https://linkedin.com/in/stokito
  * [Sergey Ponomarev](http://stokito.wordpress.com/)
 
-Thanks to [Barry Norman](https://github.com/jigsawIV) for contribution.
+Thanks to [Barry Norman](https://github.com/jigsawIV) for contribution!
