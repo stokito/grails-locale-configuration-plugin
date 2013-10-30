@@ -1,6 +1,5 @@
 package name.stokito
 
-import groovy.transform.TypeChecked
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
 
 import javax.servlet.http.HttpServletRequest
@@ -12,12 +11,11 @@ import javax.servlet.http.HttpServletResponse
  * You can define bean of this resolver in resources.groovy:
  *
  *  localeResolver(SmartConfigLocaleResolver) {
- *      supportedLocales = application.config.name.stokito.smartLocaleResolver.supportedLocales ?: []
- *      defaultLocale = application.config.name.stokito.smartLocaleResolver.defaultLocale ?: null
+ *      supportedLocales = application.config.grails.plugins.localeConfiguration.supportedLocales ?: []
+ *      defaultLocale = application.config.grails.plugins.localeConfiguration.defaultLocale ?: null
  *  }
  *
  */
-@TypeChecked
 class SmartConfigLocaleResolver extends SessionLocaleResolver {
 
     List<Locale> supportedLocales

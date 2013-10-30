@@ -24,8 +24,8 @@ You can specify a list of supported languages and choose which language to use i
 
     def doWithSpring = {
         localeResolver(SmartConfigLocaleResolver) {
-            supportedLocales = application.config.name.stokito.smartLocaleResolver.supportedLocales ?: []
-            defaultLocale = application.config.name.stokito.smartLocaleResolver.defaultLocale ?: null
+            supportedLocales = application.config.grails.plugins.localeConfiguration.supportedLocales ?: []
+            defaultLocale = application.config.grails.plugins.localeConfiguration.defaultLocale ?: null
         }
     }
 }
