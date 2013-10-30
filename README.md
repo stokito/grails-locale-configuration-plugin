@@ -30,9 +30,10 @@ Add the following lines to your Config.groovy.
 
 Locales priority
 ================
-# Language Param in the URL (request), e.g. http://www.example.net?lang=en
-# First match of the locales from the HTTP Accept-Language header
-# Default locale (defaultLocale option in Config.groovy)
+
+1. Language Param in the URL (request), e.g. http://www.example.net?lang=en
+2. First match of the locales from the HTTP Accept-Language header
+3. Default locale (defaultLocale option in Config.groovy)
 
 NOTE: This order is important and cannot be changed. You may want to provide a language selector, so the lang param should have the highest priority.
 
