@@ -60,3 +60,7 @@ For any questions feel free to contact me:
 Sergey Ponomarev, stokito@gmail.com, [blog](http://stokito.wordpress.com/), [LinkedIn](https://linkedin.com/in/stokito)
 
 Thanks to [Barry Norman](https://github.com/jigsawIV) for contribution!
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stokito/grails-locale-configuration-plugin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
