@@ -1,4 +1,5 @@
 # Grails Locale Configuration Plugin
+[![Build Status](https://travis-ci.org/stokito/grails-locale-configuration-plugin.png?branch=master)](https://travis-ci.org/stokito/grails-locale-configuration-plugin)
 
 [Grails Locale Configuration Plugin] (https://github.com/stokito/grails-locale-configuration-plugin) enhances the handling of Grails localization (i18n).
 
