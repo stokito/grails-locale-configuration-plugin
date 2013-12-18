@@ -7,7 +7,6 @@ atlassian-ide-plugin.xml
 *.log
 
 # Libraries and others
-*.jar
 *.zip
 
 # Target
