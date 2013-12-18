@@ -1,4 +1,4 @@
 language: groovy
 
-script: ./grailsw refresh-dependencies
-     && ./grailsw test-app
+script: ./grailsw.sh refresh-dependencies
+     && ./grailsw.sh test-app
