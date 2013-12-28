@@ -1,6 +1,8 @@
 # Grails Locale Configuration Plugin
 [![Build Status](https://travis-ci.org/stokito/grails-locale-configuration-plugin.png?branch=master)](https://travis-ci.org/stokito/grails-locale-configuration-plugin)
 
+[![Coverage Status](https://coveralls.io/repos/stokito/grails-locale-configuration-plugin/badge.png)](https://coveralls.io/r/stokito/grails-locale-configuration-plugin)
+
 [Grails Locale Configuration Plugin] (https://github.com/stokito/grails-locale-configuration-plugin) enhances the handling of Grails localization (i18n).
 
 This plugin is intended to enhance the language support in Grails by detecting your user’s locale and selecting the most appropriate language for them.
