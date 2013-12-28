@@ -65,3 +65,4 @@ Thanks to [Barry Norman](https://github.com/jigsawIV) for contribution!
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stokito/grails-locale-configuration-plugin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
+Please, review this project on [Ohloh](https://www.ohloh.net/p/grails-locale-configuration-plugin).
