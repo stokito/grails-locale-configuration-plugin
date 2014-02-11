@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/stokito/grails-locale-configuration-plugin.png?label=ready)](https://waffle.io/stokito/grails-locale-configuration-plugin)
 # Grails Locale Configuration Plugin
 [![Build Status](https://travis-ci.org/stokito/grails-locale-configuration-plugin.png?branch=master)](https://travis-ci.org/stokito/grails-locale-configuration-plugin)
 
