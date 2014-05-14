@@ -11,8 +11,10 @@ You can specify a list of supported languages and choose which language to use i
 
 For example, if your site supports only English, Russian and German, you can send users with other locales to the default language (English).
 
+[Official plugin page on Grails portal](http://grails.org/plugin/locale-configuration)
+
 ## Installation
-Please add the following repository and dependency to your `BuildConfig.groovy`:
+Add the following plugin dependency to your `BuildConfig.groovy`
 ```groovy
 grails.project.dependency.resolution = {
     plugins {
@@ -22,6 +24,8 @@ grails.project.dependency.resolution = {
     }
 }
 ```
+
+Check latest published version on [Grails plugin portal](http://grails.org/plugin/locale-configuration).
 
 ## Configuration
 Add the following lines to your `Config.groovy`:
