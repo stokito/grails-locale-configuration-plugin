@@ -1,7 +1,6 @@
-[![Stories in Ready](https://badge.waffle.io/stokito/grails-locale-configuration-plugin.png?label=ready)](https://waffle.io/stokito/grails-locale-configuration-plugin)
 # Grails Locale Configuration Plugin
 [![Build Status](https://travis-ci.org/stokito/grails-locale-configuration-plugin.png?branch=master)](https://travis-ci.org/stokito/grails-locale-configuration-plugin)
-
+[![Stories in Ready](https://badge.waffle.io/stokito/grails-locale-configuration-plugin.png?label=ready)](https://waffle.io/stokito/grails-locale-configuration-plugin)
 [![Coverage Status](https://coveralls.io/repos/stokito/grails-locale-configuration-plugin/badge.png)](https://coveralls.io/r/stokito/grails-locale-configuration-plugin)
 
 [Grails Locale Configuration Plugin] (https://github.com/stokito/grails-locale-configuration-plugin) enhances the handling of Grails localization (i18n).
