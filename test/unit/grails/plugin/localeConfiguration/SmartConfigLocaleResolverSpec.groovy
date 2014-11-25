@@ -132,6 +132,21 @@ class SmartConfigLocaleResolverSpec extends Specification {
     }
 
     @Unroll
+    void 'findFirstSupportedLocale(): #mainRequestedLocale #supportedLocales #bestLocale'() {
+        given:
+        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
+        resolver.supportedLocales = supportedLocales
+        resolver.defaultLocale = configuredDefaultLocale
+        expect:
+        resolver.findFirstSupportedLocale(requestedLocales) == bestLocale
+        where:
+        mainRequestedLocale | configuredDefaultLocale   | requestedLocales | supportedLocales | bestLocale
+        FRANCE              | null                      | [ANY_LOCALE]     | [FRENCH]         | FRENCH
+        FRANCE              | CONFIGURED_DEFAULT_LOCALE | [ANY_LOCALE]     | [FRENCH]         | FRENCH
+        FRANCE              | CONFIGURED_DEFAULT_LOCALE | [ANY_LOCALE]     | [FRANCE]         | FRANCE
+    }
+
+    @Unroll
     void 'setLocale() with unsupported locale should set resolved supported locale: #configuredDefaultLocale, #newLocale, #requestLocales: resolved by #comment'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
@@ -161,21 +176,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
         [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [ENGLISH]      | ENGLISH                   | 'from request.locales'
         [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [ENGLISH, US]  | ENGLISH                   | 'from request.locales, selected first by priority'
         [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [CANADA]       | ENGLISH                   | 'from request.locales, supported by language'
-    }
-
-    @Unroll
-    void 'determineBestLocale(): #mainRequestedLocale #supportedLocales #bestLocale'() {
-        given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = supportedLocales
-        resolver.defaultLocale = configuredDefaultLocale
-        expect:
-        resolver.determineBestLocale(requestedLocales) == bestLocale
-        where:
-        mainRequestedLocale | configuredDefaultLocale   | requestedLocales | supportedLocales | bestLocale
-        FRANCE              | null                      | [ANY_LOCALE]     | [FRENCH]         | FRENCH
-        FRANCE              | CONFIGURED_DEFAULT_LOCALE | [ANY_LOCALE]     | [FRENCH]         | FRENCH
-        FRANCE              | CONFIGURED_DEFAULT_LOCALE | [ANY_LOCALE]     | [FRANCE]         | FRANCE
     }
 }
 

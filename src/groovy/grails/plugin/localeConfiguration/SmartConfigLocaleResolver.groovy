@@ -26,7 +26,7 @@ class SmartConfigLocaleResolver implements LocaleResolver {
     @Override
     void setLocale(HttpServletRequest request, HttpServletResponse response, Locale newLocale) {
         List<Locale> requestLocales = [newLocale] + request.locales.toList()
-        newLocale = determineBestLocale(requestLocales)
+        newLocale = findFirstSupportedLocale(requestLocales)
         WebUtils.setSessionAttribute(request, LOCALE_SESSION_ATTRIBUTE_NAME, newLocale);
     }
 
@@ -34,14 +34,9 @@ class SmartConfigLocaleResolver implements LocaleResolver {
     Locale resolveLocale(HttpServletRequest request) {
         Locale locale = (Locale) WebUtils.getSessionAttribute(request, LOCALE_SESSION_ATTRIBUTE_NAME)
         if (!locale) {
-            locale = determineBestLocale(request.locales.toList()) ?: defaultLocale;
+            locale = findFirstSupportedLocale(request.locales.toList()) ?: defaultLocale;
         }
         return locale;
-    }
-
-
-    Locale determineBestLocale(List<Locale> requestLocales) {
-        return findFirstSupportedLocale(requestLocales)
     }
 
     Locale findFirstSupportedLocale(List<Locale> requestLocales) {
