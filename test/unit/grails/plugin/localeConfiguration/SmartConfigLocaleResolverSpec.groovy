@@ -121,8 +121,8 @@ class SmartConfigLocaleResolverSpec extends Specification {
         preferredSupportedLocale == GERMANY
     }
 
-    @Unroll('#configuredDefaultLocale, #userPreferredLocales: resolved by #comment')
-    void 'findPreferredSupportedLocale()'() {
+    @Unroll
+    void 'findPreferredSupportedLocale(): #configuredDefaultLocale, #userPreferredLocales: resolved by #comment'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = configuredDefaultLocale
@@ -139,8 +139,8 @@ class SmartConfigLocaleResolverSpec extends Specification {
         [ENGLISH, US, UK]       | [CANADA]             | ENGLISH                  | 'CANADA partially supported by language ENGLISH'
     }
 
-    @Unroll('#configuredDefaultLocale, #newLocale, #userPreferredLocales: resolved by #comment')
-    void 'setLocale() with unsupported locale should set resolved supported locale'() {
+    @Unroll
+    void 'setLocale() with unsupported locale should set resolved supported locale: #configuredDefaultLocale, #newLocale, #userPreferredLocales: resolved by #comment'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = configuredSupportedLocales
@@ -169,6 +169,20 @@ class SmartConfigLocaleResolverSpec extends Specification {
         [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [ENGLISH]            | ENGLISH                   | 'from request.locales'
         [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [ENGLISH, US]        | ENGLISH                   | 'from request.locales, selected first by priority'
         [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [CANADA]             | ENGLISH                   | 'from request.locales, supported by language'
+    }
+
+    @Unroll
+    void 'determineBestLocale(): #mainRequestedLocale #supportedLocales #bestLocale'() {
+        given:
+        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
+        resolver.supportedLocales = supportedLocales
+        resolver.defaultLocale = configuredDefaultLocale
+        expect:
+        resolver.determineBestLocale(mainRequestedLocale, requestedLocales) == bestLocale
+        where:
+        mainRequestedLocale    | configuredDefaultLocale   | requestedLocales | supportedLocales         | bestLocale
+        new Locale('ru', 'RU') | null                      | [ANY_LOCALE]     | [new Locale('ru', 'RU')] | new Locale('ru', 'RU')
+        new Locale('ru', 'RU') | CONFIGURED_DEFAULT_LOCALE | [ANY_LOCALE]     | [new Locale('ru', 'RU')] | new Locale('ru', 'RU')
     }
 }
 
