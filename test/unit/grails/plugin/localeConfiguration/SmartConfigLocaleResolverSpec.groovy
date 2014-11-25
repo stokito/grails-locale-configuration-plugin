@@ -106,34 +106,33 @@ class SmartConfigLocaleResolverSpec extends Specification {
     }
 
     @Unroll
-    void 'findFirstSupportedLocale(): #configuredDefaultLocale, #requestLocales: resolved by #comment'() {
+    void 'findFirstSupportedLocale(): #supportedLocales, #requestLocales: resolved by #comment'() {
         given:
-        resolver.supportedLocales = configuredDefaultLocale
+        resolver.supportedLocales = supportedLocales
         expect:
         resolver.findFirstSupportedLocale(requestLocales) == preferredSupportedLocale
         where:
-        configuredDefaultLocale | requestLocales    | preferredSupportedLocale | comment
-        [ENGLISH, US, UK]       | [UK, ENGLISH]     | UK                       | 'returned first preferred locale'
-        [ENGLISH, US, UK]       | [US, ENGLISH]     | US                       | 'returned first preferred locale'
-        [ENGLISH, US, UK]       | [ENGLISH]         | ENGLISH                  | 'full match'
-        [ENGLISH, US, UK]       | [CANADA, ENGLISH] | ENGLISH                  | 'returned second preferred locale'
-        [ENGLISH, US, UK]       | [CANADA, US]      | US                       | 'returned second preferred locale'
-        [ENGLISH, US, UK]       | [CANADA, UK]      | UK                       | 'returned second preferred locale'
-        [ENGLISH, US, UK]       | [CANADA]          | ENGLISH                  | 'CANADA partially supported by language ENGLISH'
+        supportedLocales  | requestLocales    | preferredSupportedLocale | comment
+        [ENGLISH, US, UK] | [UK, ENGLISH]     | UK                       | 'returned first preferred locale'
+        [ENGLISH, US, UK] | [US, ENGLISH]     | US                       | 'returned first preferred locale'
+        [ENGLISH, US, UK] | [ENGLISH]         | ENGLISH                  | 'full match'
+        [ENGLISH, US, UK] | [CANADA, ENGLISH] | ENGLISH                  | 'returned second preferred locale'
+        [ENGLISH, US, UK] | [CANADA, US]      | US                       | 'returned second preferred locale'
+        [ENGLISH, US, UK] | [CANADA, UK]      | UK                       | 'returned second preferred locale'
+        [ENGLISH, US, UK] | [CANADA]          | ENGLISH                  | 'CANADA partially supported by language ENGLISH'
     }
 
     @Unroll
     void 'findFirstSupportedLocale(): #mainRequestedLocale #supportedLocales #bestLocale'() {
         given:
         resolver.supportedLocales = supportedLocales
-        resolver.defaultLocale = configuredDefaultLocale
         expect:
         resolver.findFirstSupportedLocale(requestedLocales) == bestLocale
         where:
-        mainRequestedLocale | configuredDefaultLocale   | requestedLocales | supportedLocales | bestLocale
-        FRANCE              | null                      | [ANY_LOCALE]     | [FRENCH]         | FRENCH
-        FRANCE              | CONFIGURED_DEFAULT_LOCALE | [ANY_LOCALE]     | [FRENCH]         | FRENCH
-        FRANCE              | CONFIGURED_DEFAULT_LOCALE | [ANY_LOCALE]     | [FRANCE]         | FRANCE
+        requestedLocales | supportedLocales | bestLocale
+        [FRANCE]         | [FRENCH]         | FRENCH
+        [FRANCE]         | [FRENCH]         | FRENCH
+        [FRANCE]         | [FRANCE]         | FRANCE
     }
 
     @Unroll
