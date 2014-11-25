@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse
  *
  */
 class SmartConfigLocaleResolver extends SessionLocaleResolver {
-    List<Locale> supportedLocales
+    Set<Locale> supportedLocales
 
     @Override
     protected Locale determineDefaultLocale(HttpServletRequest request) {

@@ -18,7 +18,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = []
         resolver.defaultLocale = null
-        request.setPreferredLocales([UNSUPPORTED_LOCALE])
+        request.preferredLocales = [UNSUPPORTED_LOCALE]
         when:
         Locale resolvedLocale = resolver.resolveLocale(request)
         then:
@@ -30,7 +30,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = null
         resolver.defaultLocale = null
-        request.setPreferredLocales([UNSUPPORTED_LOCALE])
+        request.preferredLocales = [UNSUPPORTED_LOCALE]
         when:
         Locale resolvedLocale = resolver.resolveLocale(request)
         then:
@@ -50,7 +50,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = null
         resolver.defaultLocale = CONFIGURED_DEFAULT_LOCALE
-        request.setPreferredLocales([UNSUPPORTED_LOCALE])
+        request.preferredLocales = [UNSUPPORTED_LOCALE]
         when:
         Locale resolvedLocale = resolver.resolveLocale(request)
         then:
@@ -61,7 +61,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMANY]
-        request.setPreferredLocales([GERMANY])
+        request.preferredLocales = [GERMANY]
         when:
         Locale resolvedLocale = resolver.resolveLocale(request)
         then:
@@ -72,17 +72,17 @@ class SmartConfigLocaleResolverSpec extends Specification {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMAN]
-        request.setPreferredLocales([GERMANY])
+        request.preferredLocales = [GERMANY]
         when:
         Locale resolvedLocale = resolver.resolveLocale(request)
         then:
         resolvedLocale == GERMAN
     }
 
-    void 'findFirstPreferredSupportedLocaleByLanguage()'() {
+    void 'findFirstPreferredSupportedLocaleByLanguage(): if requested locale with country but we support only language'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = [GERMAN, ANY_LOCALE]
+        resolver.supportedLocales = [GERMAN]
         when:
         Locale supportedLocaleWithSameLanguage = resolver.findFirstPreferredSupportedLocaleByLanguage([GERMANY])
         then:
@@ -103,7 +103,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMANY]
-        request.setPreferredLocales([UNSUPPORTED_LOCALE, GERMANY])
+        request.preferredLocales = [UNSUPPORTED_LOCALE, GERMANY]
         when:
         Locale resolvedLocale = resolver.resolveLocale(request)
         then:
@@ -145,14 +145,14 @@ class SmartConfigLocaleResolverSpec extends Specification {
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = configuredSupportedLocales
         resolver.defaultLocale = configuredDefaultLocale
-        request.setPreferredLocales(userPreferredLocales)
+        request.preferredLocales = userPreferredLocales
         when:
         resolver.setLocale(request, response, newLocale)
         Locale localeSavedToSession = (Locale) request.getSession().getAttribute(SmartConfigLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME)
         // reset all to null to ensure that locale was got from session
         resolver.supportedLocales = null
         resolver.defaultLocale = null
-        request.setPreferredLocales([ANY_LOCALE])
+        request.preferredLocales = [ANY_LOCALE]
         then:
         localeSavedToSession == preferredSupportedLocale
         preferredSupportedLocale == resolver.resolveLocale(request)
@@ -180,9 +180,10 @@ class SmartConfigLocaleResolverSpec extends Specification {
         expect:
         resolver.determineBestLocale(mainRequestedLocale, requestedLocales) == bestLocale
         where:
-        mainRequestedLocale    | configuredDefaultLocale   | requestedLocales | supportedLocales         | bestLocale
-        new Locale('ru', 'RU') | null                      | [ANY_LOCALE]     | [new Locale('ru', 'RU')] | new Locale('ru', 'RU')
-        new Locale('ru', 'RU') | CONFIGURED_DEFAULT_LOCALE | [ANY_LOCALE]     | [new Locale('ru', 'RU')] | new Locale('ru', 'RU')
+        mainRequestedLocale | configuredDefaultLocale   | requestedLocales | supportedLocales | bestLocale
+        FRANCE              | null                      | [ANY_LOCALE]     | [FRENCH]         | FRENCH
+        FRANCE              | CONFIGURED_DEFAULT_LOCALE | [ANY_LOCALE]     | [FRENCH]         | FRENCH
+        FRANCE              | CONFIGURED_DEFAULT_LOCALE | [ANY_LOCALE]     | [FRANCE]         | FRANCE
     }
 }
 
