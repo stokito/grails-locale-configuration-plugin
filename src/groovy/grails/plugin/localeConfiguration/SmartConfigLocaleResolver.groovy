@@ -1,4 +1,4 @@
-package name.stokito
+package grails.plugin.localeConfiguration
 
 import org.springframework.web.servlet.i18n.SessionLocaleResolver
 

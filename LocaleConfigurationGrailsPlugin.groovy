@@ -1,4 +1,4 @@
-import name.stokito.SmartConfigLocaleResolver
+import grails.plugin.localeConfiguration.SmartConfigLocaleResolver
 
 class LocaleConfigurationGrailsPlugin {
     String version = '1.0'

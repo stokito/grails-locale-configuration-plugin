@@ -1,4 +1,4 @@
-package name.stokito
+package grails.plugin.localeConfiguration
 
 import grails.test.mixin.TestMixin
 import grails.test.mixin.web.ControllerUnitTestMixin

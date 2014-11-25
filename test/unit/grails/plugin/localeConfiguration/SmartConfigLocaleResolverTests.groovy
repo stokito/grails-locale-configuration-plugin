@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package name.stokito
+package grails.plugin.localeConfiguration
 
 import junit.framework.TestCase
 import org.springframework.mock.web.MockHttpServletRequest
