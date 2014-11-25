@@ -65,6 +65,16 @@ class SmartConfigLocaleResolverSpec extends Specification {
         resolved == GERMAN
     }
 
+    void 'resolveLocale() should return supported locale that is first matching with user requested locales'() {
+        given:
+        resolver.supportedLocales = [GERMANY]
+        request.preferredLocales = [UNSUPPORTED, GERMANY]
+        when:
+        Locale resolved = resolver.resolveLocale(request)
+        then:
+        resolved == GERMANY
+    }
+
     void 'findFirstSupportedLocaleByLanguage(): if requested locale with country but we support only language'() {
         given:
         resolver.supportedLocales = [GERMAN]
@@ -83,28 +93,8 @@ class SmartConfigLocaleResolverSpec extends Specification {
         resolved == GERMANY
     }
 
-    void 'resolveLocale() should return supported locale that is first matching with user requested locales'() {
-        given:
-        resolver.supportedLocales = [GERMANY]
-        request.preferredLocales = [UNSUPPORTED, GERMANY]
-        when:
-        Locale resolved = resolver.resolveLocale(request)
-        then:
-        resolved == GERMANY
-    }
-
-    void 'findFirstSupportedLocale() should return supported locale that is first matching with user requested locales'() {
-        given:
-        resolver.supportedLocales = [GERMANY]
-        List<Locale> requestLocales = [UNSUPPORTED, GERMANY]
-        when:
-        Locale resolved = resolver.findFirstSupportedLocale(requestLocales)
-        then:
-        resolved == GERMANY
-    }
-
     @Unroll
-    void 'findFirstSupportedLocale(): #supportedLocales, #requestLocales: resolved by #comment'() {
+    void 'findFirstSupportedLocale(): #supportedLocales #requestLocales: resolved by #comment'() {
         given:
         resolver.supportedLocales = supportedLocales
         expect:
@@ -118,19 +108,12 @@ class SmartConfigLocaleResolverSpec extends Specification {
         [ENGLISH, US, UK] | [CANADA, US]      | US       | 'returned second preferred locale'
         [ENGLISH, US, UK] | [CANADA, UK]      | UK       | 'returned second preferred locale'
         [ENGLISH, US, UK] | [CANADA]          | ENGLISH  | 'CANADA partially supported by language ENGLISH'
-    }
-
-    @Unroll
-    void 'findFirstSupportedLocale(): #requestedLocales #supportedLocales #resolved'() {
-        given:
-        resolver.supportedLocales = supportedLocales
-        expect:
-        resolver.findFirstSupportedLocale(requestedLocales) == resolved
-        where:
-        requestedLocales | supportedLocales | resolved
-        [FRANCE]         | [FRENCH]         | FRENCH
-        [FRANCE]         | [FRENCH]         | FRENCH
-        [FRANCE]         | [FRANCE]         | FRANCE
+        // dd
+        [FRENCH] | [FRANCE] | FRENCH | ''
+        [FRENCH] | [FRANCE] | FRENCH | ''
+        [FRANCE] | [FRANCE] | FRANCE | ''
+        // ddd
+        [GERMANY] | [UNSUPPORTED, GERMANY] | GERMANY | 'should return supported locale that is first matching with user requested locales'
     }
 
     @Unroll
