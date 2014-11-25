@@ -34,7 +34,7 @@ class SmartConfigLocaleResolver implements LocaleResolver {
     Locale resolveLocale(HttpServletRequest request) {
         Locale locale = (Locale) WebUtils.getSessionAttribute(request, LOCALE_SESSION_ATTRIBUTE_NAME)
         if (!locale) {
-            locale = findFirstSupportedLocale(request.locales.toList()) ?: defaultLocale;
+            locale = findFirstSupportedLocale(request.locales.toList()) ?: defaultLocale
         }
         return locale;
     }

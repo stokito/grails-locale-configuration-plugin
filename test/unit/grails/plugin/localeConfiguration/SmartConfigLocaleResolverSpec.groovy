@@ -12,10 +12,10 @@ class SmartConfigLocaleResolverSpec extends Specification {
     static final UNSUPPORTED_LOCALE = new Locale('unsupported')
     static final ANY_LOCALE = new Locale('any')
     static final CONFIGURED_DEFAULT_LOCALE = new Locale('configured_default')
+    SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
 
     void 'resolveLocale() should return user requested locale if not configured: supportedLocales is empty list'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = []
         resolver.defaultLocale = null
         request.preferredLocales = [UNSUPPORTED_LOCALE]
@@ -27,7 +27,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
 
     void 'resolveLocale() should return user requested locale if not configured: supportedLocales is null'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = null
         resolver.defaultLocale = null
         request.preferredLocales = [UNSUPPORTED_LOCALE]
@@ -39,7 +38,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
 
     void 'resolveLocale() should return default locale if user requested unsupported one'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = null
         resolver.defaultLocale = CONFIGURED_DEFAULT_LOCALE
         request.preferredLocales = [UNSUPPORTED_LOCALE]
@@ -51,7 +49,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
 
     void 'resolveLocale() should return user requested locale if it supported'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMANY]
         request.preferredLocales = [GERMANY]
         when:
@@ -62,7 +59,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
 
     void 'resolveLocale() should return locale with same language if user requested locale that supported only partially by language'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMAN]
         request.preferredLocales = [GERMANY]
         when:
@@ -73,7 +69,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
 
     void 'findFirstSupportedLocaleByLanguage(): if requested locale with country but we support only language'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMAN]
         when:
         Locale supportedLocaleWithSameLanguage = resolver.findFirstSupportedLocaleByLanguage([GERMANY])
@@ -83,7 +78,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
 
     void 'findFirstSupportedLocaleByLanguageAndCountry()'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMAN, GERMANY, ANY_LOCALE]
         when:
         Locale supportedLocaleWithSameLanguage = resolver.findFirstSupportedLocaleByLanguageAndCountry([GERMANY])
@@ -93,7 +87,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
 
     void 'resolveLocale() should return supported locale that is first matching with user requested locales'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMANY]
         request.preferredLocales = [UNSUPPORTED_LOCALE, GERMANY]
         when:
@@ -104,7 +97,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
 
     void 'findFirstSupportedLocale() should return supported locale that is first matching with user requested locales'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMANY]
         List<Locale> requestLocales = [UNSUPPORTED_LOCALE, GERMANY]
         when:
@@ -116,7 +108,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
     @Unroll
     void 'findFirstSupportedLocale(): #configuredDefaultLocale, #requestLocales: resolved by #comment'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = configuredDefaultLocale
         expect:
         resolver.findFirstSupportedLocale(requestLocales) == preferredSupportedLocale
@@ -134,7 +125,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
     @Unroll
     void 'findFirstSupportedLocale(): #mainRequestedLocale #supportedLocales #bestLocale'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = supportedLocales
         resolver.defaultLocale = configuredDefaultLocale
         expect:
@@ -149,7 +139,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
     @Unroll
     void 'setLocale() with unsupported locale should set resolved supported locale: #configuredDefaultLocale, #newLocale, #requestLocales: resolved by #comment'() {
         given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = configuredSupportedLocales
         resolver.defaultLocale = configuredDefaultLocale
         request.preferredLocales = requestLocales
