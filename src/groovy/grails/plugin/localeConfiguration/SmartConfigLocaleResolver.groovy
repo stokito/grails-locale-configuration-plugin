@@ -27,23 +27,23 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
     @Override
     void setLocale(HttpServletRequest request, HttpServletResponse response, Locale newLocale) {
         List<Locale> requestLocales = [newLocale] + request.locales.toList()
-        Locale selectedLocale = determineBestLocale(requestLocales)
-        super.setLocale(request, response, selectedLocale)
+        newLocale = determineBestLocale(requestLocales) ?: defaultLocale
+        super.setLocale(request, response, newLocale)
     }
 
     Locale determineBestLocale(List<Locale> requestLocales) {
-        return findFirstSupportedLocale(requestLocales) ?: defaultLocale
+        return findFirstSupportedLocale(requestLocales)
     }
 
     Locale findFirstSupportedLocale(List<Locale> requestLocales) {
         return findFirstSupportedLocaleByLanguageAndCountry(requestLocales) ?: findFirstSupportedLocaleByLanguage(requestLocales)
     }
 
-    Locale findFirstSupportedLocaleByLanguageAndCountry(List<Locale> userPreferredLocales) {
-        return userPreferredLocales.find { it in supportedLocales }
+    Locale findFirstSupportedLocaleByLanguageAndCountry(List<Locale> requestLocales) {
+        return requestLocales.find { it in supportedLocales }
     }
 
-    Locale findFirstSupportedLocaleByLanguage(List<Locale> userPreferredLocales) {
-        return userPreferredLocales.find { it.language in supportedLocales*.language }
+    Locale findFirstSupportedLocaleByLanguage(List<Locale> requestLocales) {
+        return requestLocales.find { it.language in supportedLocales*.language }
     }
 }
