@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse
  *
  */
 class SmartConfigLocaleResolver extends SessionLocaleResolver {
-    Set<Locale> supportedLocales
+    LinkedHashSet<Locale> supportedLocales
 
     @Override
     protected Locale determineDefaultLocale(HttpServletRequest request) {
@@ -48,22 +48,11 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
         return preferredSupportedLocale
     }
 
-    Locale findFirstPreferredSupportedLocaleByLanguage(List<Locale> userPreferredLocales) {
-        for (Locale preferredLocale : userPreferredLocales) {
-            Locale supportedByLanguageLocale = supportedLocales?.find({ it.language == preferredLocale.language })
-            if (supportedByLanguageLocale) {
-                return supportedByLanguageLocale
-            }
-        }
-        return null
-    }
-
     Locale findFirstPreferredSupportedLocaleByLanguageAndCountry(List<Locale> userPreferredLocales) {
-        userPreferredLocales.find({ Locale preferredLocale -> localeIsSupported(preferredLocale) })
+        userPreferredLocales.find { it in supportedLocales }
     }
 
-    boolean localeIsSupported(Locale localeDesiredByUser) {
-        return supportedLocales?.contains(localeDesiredByUser)
+    Locale findFirstPreferredSupportedLocaleByLanguage(List<Locale> userPreferredLocales) {
+        userPreferredLocales.find { it.language in supportedLocales*.language }
     }
-
 }

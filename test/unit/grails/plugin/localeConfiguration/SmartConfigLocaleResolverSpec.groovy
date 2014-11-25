@@ -37,14 +37,6 @@ class SmartConfigLocaleResolverSpec extends Specification {
         resolvedLocale == UNSUPPORTED_LOCALE
     }
 
-    void 'localeIsSupported() should return false if supportedLocales are null'() {
-        given:
-        SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
-        resolver.supportedLocales = null
-        expect:
-        !resolver.localeIsSupported(ANY_LOCALE)
-    }
-
     void 'resolveLocale() should return default locale if user requested unsupported one'() {
         given:
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
@@ -127,7 +119,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = configuredDefaultLocale
         expect:
-        preferredSupportedLocale == resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
+        resolver.findFirstPreferredSupportedLocale(userPreferredLocales) == preferredSupportedLocale
         where:
         configuredDefaultLocale | userPreferredLocales | preferredSupportedLocale | comment
         [ENGLISH, US, UK]       | [UK, ENGLISH]        | UK                       | 'returned first preferred locale'
@@ -148,7 +140,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         request.preferredLocales = userPreferredLocales
         when:
         resolver.setLocale(request, response, newLocale)
-        Locale localeSavedToSession = (Locale) request.getSession().getAttribute(SmartConfigLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME)
+        Locale localeSavedToSession = (Locale) session[SmartConfigLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME]
         // reset all to null to ensure that locale was got from session
         resolver.supportedLocales = null
         resolver.defaultLocale = null
