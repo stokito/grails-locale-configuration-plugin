@@ -9,9 +9,9 @@ import static java.util.Locale.*
 
 @TestMixin(ControllerUnitTestMixin)
 class SmartConfigLocaleResolverSpec extends Specification {
-    static final Locale UNSUPPORTED_LOCALE = new Locale('unsupported')
-    static final Locale ANY_LOCALE = new Locale('any')
-    static final Locale CONFIGURED_DEFAULT_LOCALE = new Locale('configured_default')
+    static final UNSUPPORTED_LOCALE = new Locale('unsupported')
+    static final ANY_LOCALE = new Locale('any')
+    static final CONFIGURED_DEFAULT_LOCALE = new Locale('configured_default')
 
     void 'resolveLocale() should return user requested locale if not configured: supportedLocales is empty list'() {
         given:

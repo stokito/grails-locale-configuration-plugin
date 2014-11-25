@@ -11,13 +11,12 @@ import javax.servlet.http.HttpServletResponse
  * You can define bean of this resolver in resources.groovy:
  *
  *  localeResolver(SmartConfigLocaleResolver) {
- *      supportedLocales = application.config.grails.plugins.localeConfiguration.supportedLocales ?: []
- *      defaultLocale = application.config.grails.plugins.localeConfiguration.defaultLocale ?: null
+ *      supportedLocales = application.config.grails.plugin.localeConfiguration.supportedLocales ?: []
+ *      defaultLocale = application.config.grails.plugin.localeConfiguration.defaultLocale ?: null
  *  }
  *
  */
 class SmartConfigLocaleResolver extends SessionLocaleResolver {
-
     List<Locale> supportedLocales
 
     @Override
@@ -51,9 +50,7 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
 
     Locale findFirstPreferredSupportedLocaleByLanguage(List<Locale> userPreferredLocales) {
         for (Locale preferredLocale : userPreferredLocales) {
-            Locale supportedByLanguageLocale = supportedLocales?.find({ Locale supportedLocale ->
-                supportedLocale.language == preferredLocale.language
-            })
+            Locale supportedByLanguageLocale = supportedLocales?.find({ it.language == preferredLocale.language })
             if (supportedByLanguageLocale) {
                 return supportedByLanguageLocale
             }
@@ -62,9 +59,7 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
     }
 
     Locale findFirstPreferredSupportedLocaleByLanguageAndCountry(List<Locale> userPreferredLocales) {
-        userPreferredLocales.find({ Locale preferredLocale ->
-            localeIsSupported(preferredLocale)
-        })
+        userPreferredLocales.find({ Locale preferredLocale -> localeIsSupported(preferredLocale) })
     }
 
     boolean localeIsSupported(Locale localeDesiredByUser) {
