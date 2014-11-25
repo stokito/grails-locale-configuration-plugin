@@ -9,42 +9,40 @@ import static java.util.Locale.*
 
 @TestMixin(ControllerUnitTestMixin)
 class SmartConfigLocaleResolverSpec extends Specification {
-    static final UNSUPPORTED_LOCALE = new Locale('unsupported')
-    static final ANY_LOCALE = new Locale('any')
-    static final CONFIGURED_DEFAULT_LOCALE = new Locale('configured_default')
+    static final UNSUPPORTED = new Locale('unsupported')
+    static final ANY = new Locale('any')
+    static final DEFAULT = new Locale('default')
     SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
 
     void 'resolveLocale() should return user requested locale if not configured: supportedLocales is empty list'() {
         given:
         resolver.supportedLocales = []
-        resolver.defaultLocale = null
-        request.preferredLocales = [UNSUPPORTED_LOCALE]
+        request.preferredLocales = [UNSUPPORTED]
         when:
-        Locale resolvedLocale = resolver.resolveLocale(request)
+        Locale resolved = resolver.resolveLocale(request)
         then:
-        resolvedLocale == UNSUPPORTED_LOCALE
+        resolved == UNSUPPORTED
     }
 
     void 'resolveLocale() should return user requested locale if not configured: supportedLocales is null'() {
         given:
         resolver.supportedLocales = null
-        resolver.defaultLocale = null
-        request.preferredLocales = [UNSUPPORTED_LOCALE]
+        request.preferredLocales = [UNSUPPORTED]
         when:
-        Locale resolvedLocale = resolver.resolveLocale(request)
+        Locale resolved = resolver.resolveLocale(request)
         then:
-        resolvedLocale == UNSUPPORTED_LOCALE
+        resolved == UNSUPPORTED
     }
 
     void 'resolveLocale() should return default locale if user requested unsupported one'() {
         given:
         resolver.supportedLocales = null
-        resolver.defaultLocale = CONFIGURED_DEFAULT_LOCALE
-        request.preferredLocales = [UNSUPPORTED_LOCALE]
+        resolver.defaultLocale = DEFAULT
+        request.preferredLocales = [UNSUPPORTED]
         when:
-        Locale resolvedLocale = resolver.resolveLocale(request)
+        Locale resolved = resolver.resolveLocale(request)
         then:
-        resolvedLocale == CONFIGURED_DEFAULT_LOCALE
+        resolved == DEFAULT
     }
 
     void 'resolveLocale() should return user requested locale if it supported'() {
@@ -52,9 +50,9 @@ class SmartConfigLocaleResolverSpec extends Specification {
         resolver.supportedLocales = [GERMANY]
         request.preferredLocales = [GERMANY]
         when:
-        Locale resolvedLocale = resolver.resolveLocale(request)
+        Locale resolved = resolver.resolveLocale(request)
         then:
-        resolvedLocale == GERMANY
+        resolved == GERMANY
     }
 
     void 'resolveLocale() should return locale with same language if user requested locale that supported only partially by language'() {
@@ -62,9 +60,9 @@ class SmartConfigLocaleResolverSpec extends Specification {
         resolver.supportedLocales = [GERMAN]
         request.preferredLocales = [GERMANY]
         when:
-        Locale resolvedLocale = resolver.resolveLocale(request)
+        Locale resolved = resolver.resolveLocale(request)
         then:
-        resolvedLocale == GERMAN
+        resolved == GERMAN
     }
 
     void 'findFirstSupportedLocaleByLanguage(): if requested locale with country but we support only language'() {
@@ -78,31 +76,31 @@ class SmartConfigLocaleResolverSpec extends Specification {
 
     void 'findFirstSupportedLocaleByLanguageAndCountry()'() {
         given:
-        resolver.supportedLocales = [GERMAN, GERMANY, ANY_LOCALE]
+        resolver.supportedLocales = [GERMAN, GERMANY, ANY]
         when:
-        Locale supportedLocaleWithSameLanguage = resolver.findFirstSupportedLocaleByLanguageAndCountry([GERMANY])
+        Locale resolved = resolver.findFirstSupportedLocaleByLanguageAndCountry([GERMANY])
         then:
-        supportedLocaleWithSameLanguage == GERMANY
+        resolved == GERMANY
     }
 
     void 'resolveLocale() should return supported locale that is first matching with user requested locales'() {
         given:
         resolver.supportedLocales = [GERMANY]
-        request.preferredLocales = [UNSUPPORTED_LOCALE, GERMANY]
+        request.preferredLocales = [UNSUPPORTED, GERMANY]
         when:
-        Locale resolvedLocale = resolver.resolveLocale(request)
+        Locale resolved = resolver.resolveLocale(request)
         then:
-        resolvedLocale == GERMANY
+        resolved == GERMANY
     }
 
     void 'findFirstSupportedLocale() should return supported locale that is first matching with user requested locales'() {
         given:
         resolver.supportedLocales = [GERMANY]
-        List<Locale> requestLocales = [UNSUPPORTED_LOCALE, GERMANY]
+        List<Locale> requestLocales = [UNSUPPORTED, GERMANY]
         when:
-        Locale preferredSupportedLocale = resolver.findFirstSupportedLocale(requestLocales)
+        Locale resolved = resolver.findFirstSupportedLocale(requestLocales)
         then:
-        preferredSupportedLocale == GERMANY
+        resolved == GERMANY
     }
 
     @Unroll
@@ -110,36 +108,36 @@ class SmartConfigLocaleResolverSpec extends Specification {
         given:
         resolver.supportedLocales = supportedLocales
         expect:
-        resolver.findFirstSupportedLocale(requestLocales) == preferredSupportedLocale
+        resolver.findFirstSupportedLocale(requestLocales) == resolved
         where:
-        supportedLocales  | requestLocales    | preferredSupportedLocale | comment
-        [ENGLISH, US, UK] | [UK, ENGLISH]     | UK                       | 'returned first preferred locale'
-        [ENGLISH, US, UK] | [US, ENGLISH]     | US                       | 'returned first preferred locale'
-        [ENGLISH, US, UK] | [ENGLISH]         | ENGLISH                  | 'full match'
-        [ENGLISH, US, UK] | [CANADA, ENGLISH] | ENGLISH                  | 'returned second preferred locale'
-        [ENGLISH, US, UK] | [CANADA, US]      | US                       | 'returned second preferred locale'
-        [ENGLISH, US, UK] | [CANADA, UK]      | UK                       | 'returned second preferred locale'
-        [ENGLISH, US, UK] | [CANADA]          | ENGLISH                  | 'CANADA partially supported by language ENGLISH'
+        supportedLocales  | requestLocales    | resolved | comment
+        [ENGLISH, US, UK] | [UK, ENGLISH]     | UK       | 'returned first preferred locale'
+        [ENGLISH, US, UK] | [US, ENGLISH]     | US       | 'returned first preferred locale'
+        [ENGLISH, US, UK] | [ENGLISH]         | ENGLISH  | 'full match'
+        [ENGLISH, US, UK] | [CANADA, ENGLISH] | ENGLISH  | 'returned second preferred locale'
+        [ENGLISH, US, UK] | [CANADA, US]      | US       | 'returned second preferred locale'
+        [ENGLISH, US, UK] | [CANADA, UK]      | UK       | 'returned second preferred locale'
+        [ENGLISH, US, UK] | [CANADA]          | ENGLISH  | 'CANADA partially supported by language ENGLISH'
     }
 
     @Unroll
-    void 'findFirstSupportedLocale(): #mainRequestedLocale #supportedLocales #bestLocale'() {
+    void 'findFirstSupportedLocale(): #requestedLocales #supportedLocales #resolved'() {
         given:
         resolver.supportedLocales = supportedLocales
         expect:
-        resolver.findFirstSupportedLocale(requestedLocales) == bestLocale
+        resolver.findFirstSupportedLocale(requestedLocales) == resolved
         where:
-        requestedLocales | supportedLocales | bestLocale
+        requestedLocales | supportedLocales | resolved
         [FRANCE]         | [FRENCH]         | FRENCH
         [FRANCE]         | [FRENCH]         | FRENCH
         [FRANCE]         | [FRANCE]         | FRANCE
     }
 
     @Unroll
-    void 'setLocale() with unsupported locale should set resolved supported locale: #configuredDefaultLocale, #newLocale, #requestLocales: resolved by #comment'() {
+    void 'setLocale() with unsupported locale should set resolved supported locale: #defLocale, #newLocale, #requestLocales: resolved by #comment'() {
         given:
-        resolver.supportedLocales = configuredSupportedLocales
-        resolver.defaultLocale = configuredDefaultLocale
+        resolver.supportedLocales = supportedLocales
+        resolver.defaultLocale = defLocale
         request.preferredLocales = requestLocales
         when:
         resolver.setLocale(request, response, newLocale)
@@ -147,23 +145,23 @@ class SmartConfigLocaleResolverSpec extends Specification {
         // reset all to null to ensure that locale was got from session
         resolver.supportedLocales = null
         resolver.defaultLocale = null
-        request.preferredLocales = [ANY_LOCALE]
+        request.preferredLocales = [ANY]
         then:
-        localeSavedToSession == preferredSupportedLocale
-        preferredSupportedLocale == resolver.resolveLocale(request)
+        localeSavedToSession == resolved
+        resolved == resolver.resolveLocale(request)
         where:
-        configuredSupportedLocales | configuredDefaultLocale   | newLocale          | requestLocales | preferredSupportedLocale  | comment
-        [ENGLISH, US, UK]          | ANY_LOCALE                | UK                 | [ANY_LOCALE]   | UK                        | 'newLocale absolutely supported, all fine'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | US                 | [ANY_LOCALE]   | US                        | 'newLocale absolutely supported, all fine'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | ENGLISH            | [ANY_LOCALE]   | ENGLISH                   | 'newLocale absolutely supported, all fine'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | CANADA             | [ANY_LOCALE]   | ENGLISH                   | 'newLocale partially supported by language'
-        [ENGLISH, US, UK]          | CONFIGURED_DEFAULT_LOCALE | UNSUPPORTED_LOCALE | [ANY_LOCALE]   | CONFIGURED_DEFAULT_LOCALE | 'newLocale unsupported, returned default language'
-        [ENGLISH, US, UK]          | null                      | UNSUPPORTED_LOCALE | [ANY_LOCALE]   | UNSUPPORTED_LOCALE        | 'newLocale unsupported, but default is not set, returned newLocale'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [US]           | US                        | 'from request.locales'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [UK]           | UK                        | 'from request.locales'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [ENGLISH]      | ENGLISH                   | 'from request.locales'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [ENGLISH, US]  | ENGLISH                   | 'from request.locales, selected first by priority'
-        [ENGLISH, US, UK]          | ANY_LOCALE                | UNSUPPORTED_LOCALE | [CANADA]       | ENGLISH                   | 'from request.locales, supported by language'
+        supportedLocales  | defLocale | newLocale   | requestLocales | resolved    | comment
+        [ENGLISH, US, UK] | ANY       | UK          | [ANY]          | UK          | 'newLocale absolutely supported, all fine'
+        [ENGLISH, US, UK] | ANY       | US          | [ANY]          | US          | 'newLocale absolutely supported, all fine'
+        [ENGLISH, US, UK] | ANY       | ENGLISH     | [ANY]          | ENGLISH     | 'newLocale absolutely supported, all fine'
+        [ENGLISH, US, UK] | ANY       | CANADA      | [ANY]          | ENGLISH     | 'newLocale partially supported by language'
+        [ENGLISH, US, UK] | DEFAULT   | UNSUPPORTED | [ANY]          | DEFAULT     | 'newLocale unsupported, returned default language'
+        [ENGLISH, US, UK] | null      | UNSUPPORTED | [ANY]          | UNSUPPORTED | 'newLocale unsupported, but default is not set, returned newLocale'
+        [ENGLISH, US, UK] | ANY       | UNSUPPORTED | [US]           | US          | 'from request.locales'
+        [ENGLISH, US, UK] | ANY       | UNSUPPORTED | [UK]           | UK          | 'from request.locales'
+        [ENGLISH, US, UK] | ANY       | UNSUPPORTED | [ENGLISH]      | ENGLISH     | 'from request.locales'
+        [ENGLISH, US, UK] | ANY       | UNSUPPORTED | [ENGLISH, US]  | ENGLISH     | 'from request.locales, selected first by priority'
+        [ENGLISH, US, UK] | ANY       | UNSUPPORTED | [CANADA]       | ENGLISH     | 'from request.locales, supported by language'
     }
 }
 
