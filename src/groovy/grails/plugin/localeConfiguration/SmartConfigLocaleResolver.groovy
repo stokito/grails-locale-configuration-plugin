@@ -26,33 +26,24 @@ class SmartConfigLocaleResolver extends SessionLocaleResolver {
 
     @Override
     void setLocale(HttpServletRequest request, HttpServletResponse response, Locale newLocale) {
-        List<Locale> userPreferredLocales = [newLocale]
-        userPreferredLocales.addAll(request.locales.toList())
-        Locale selectedLocale = determineBestLocale(newLocale, userPreferredLocales)
+        List<Locale> requestLocales = [newLocale] + request.locales.toList()
+        Locale selectedLocale = determineBestLocale(newLocale, requestLocales)
         super.setLocale(request, response, selectedLocale)
     }
 
-    Locale determineBestLocale(Locale mainRequestedLocale, List<Locale> requestedLocales) {
-        Locale selectedLocale = findFirstPreferredSupportedLocale(requestedLocales)
-        if (!selectedLocale) {
-            selectedLocale = defaultLocale ?: mainRequestedLocale
-        }
-        return selectedLocale
+    Locale determineBestLocale(Locale mainLocale, List<Locale> requestLocales) {
+        return findFirstPreferredSupportedLocale(requestLocales) ?: (defaultLocale ?: mainLocale)
     }
 
-    Locale findFirstPreferredSupportedLocale(List<Locale> userPreferredLocales) {
-        Locale preferredSupportedLocale = findFirstPreferredSupportedLocaleByLanguageAndCountry(userPreferredLocales)
-        if (!preferredSupportedLocale) {
-            preferredSupportedLocale = findFirstPreferredSupportedLocaleByLanguage(userPreferredLocales)
-        }
-        return preferredSupportedLocale
+    Locale findFirstPreferredSupportedLocale(List<Locale> requestLocales) {
+        return findFirstSupportedLocaleByLanguageAndCountry(requestLocales) ?: findFirstSupportedLocaleByLanguage(requestLocales)
     }
 
-    Locale findFirstPreferredSupportedLocaleByLanguageAndCountry(List<Locale> userPreferredLocales) {
-        userPreferredLocales.find { it in supportedLocales }
+    Locale findFirstSupportedLocaleByLanguageAndCountry(List<Locale> userPreferredLocales) {
+        return userPreferredLocales.find { it in supportedLocales }
     }
 
-    Locale findFirstPreferredSupportedLocaleByLanguage(List<Locale> userPreferredLocales) {
-        userPreferredLocales.find { it.language in supportedLocales*.language }
+    Locale findFirstSupportedLocaleByLanguage(List<Locale> userPreferredLocales) {
+        return userPreferredLocales.find { it.language in supportedLocales*.language }
     }
 }

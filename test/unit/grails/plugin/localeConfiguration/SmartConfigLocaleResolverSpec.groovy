@@ -76,7 +76,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMAN]
         when:
-        Locale supportedLocaleWithSameLanguage = resolver.findFirstPreferredSupportedLocaleByLanguage([GERMANY])
+        Locale supportedLocaleWithSameLanguage = resolver.findFirstSupportedLocaleByLanguage([GERMANY])
         then:
         supportedLocaleWithSameLanguage == GERMAN
     }
@@ -86,7 +86,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = [GERMAN, GERMANY, ANY_LOCALE]
         when:
-        Locale supportedLocaleWithSameLanguage = resolver.findFirstPreferredSupportedLocaleByLanguageAndCountry([GERMANY])
+        Locale supportedLocaleWithSameLanguage = resolver.findFirstSupportedLocaleByLanguageAndCountry([GERMANY])
         then:
         supportedLocaleWithSameLanguage == GERMANY
     }
