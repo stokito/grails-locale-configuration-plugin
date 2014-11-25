@@ -1,6 +1,7 @@
 package grails.plugin.localeConfiguration
 
-import org.springframework.web.servlet.i18n.SessionLocaleResolver
+import org.springframework.web.servlet.LocaleResolver
+import org.springframework.web.util.WebUtils
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -16,20 +17,28 @@ import javax.servlet.http.HttpServletResponse
  *  }
  *
  */
-class SmartConfigLocaleResolver extends SessionLocaleResolver {
+class SmartConfigLocaleResolver implements LocaleResolver {
+    static final LOCALE_SESSION_ATTRIBUTE_NAME =  SmartConfigLocaleResolver.class.name + '.LOCALE';
     LinkedHashSet<Locale> supportedLocales
+    Locale defaultLocale
 
-    @Override
-    protected Locale determineDefaultLocale(HttpServletRequest request) {
-        return determineBestLocale(request.locales.toList()) ?: defaultLocale
-    }
 
     @Override
     void setLocale(HttpServletRequest request, HttpServletResponse response, Locale newLocale) {
         List<Locale> requestLocales = [newLocale] + request.locales.toList()
         newLocale = determineBestLocale(requestLocales)
-        super.setLocale(request, response, newLocale)
+        WebUtils.setSessionAttribute(request, LOCALE_SESSION_ATTRIBUTE_NAME, newLocale);
     }
+
+    @Override
+    Locale resolveLocale(HttpServletRequest request) {
+        Locale locale = (Locale) WebUtils.getSessionAttribute(request, LOCALE_SESSION_ATTRIBUTE_NAME)
+        if (!locale) {
+            locale = determineBestLocale(request.locales.toList()) ?: defaultLocale;
+        }
+        return locale;
+    }
+
 
     Locale determineBestLocale(List<Locale> requestLocales) {
         return findFirstSupportedLocale(requestLocales)
