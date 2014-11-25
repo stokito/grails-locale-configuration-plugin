@@ -14,83 +14,36 @@ class SmartConfigLocaleResolverSpec extends Specification {
     static final DEFAULT = new Locale('default')
     SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
 
-    void 'resolveLocale() should return user requested locale if not configured: supportedLocales is empty list'() {
+    @Unroll
+    void 'resolveLocale(): #comment'() {
         given:
-        resolver.supportedLocales = []
-        request.preferredLocales = [UNSUPPORTED]
-        when:
-        Locale resolved = resolver.resolveLocale(request)
-        then:
-        resolved == UNSUPPORTED
-    }
-
-    void 'resolveLocale() should return user requested locale if not configured: supportedLocales is null'() {
-        given:
-        resolver.supportedLocales = null
-        request.preferredLocales = [UNSUPPORTED]
-        when:
-        Locale resolved = resolver.resolveLocale(request)
-        then:
-        resolved == UNSUPPORTED
-    }
-
-    void 'resolveLocale() should return default locale if user requested unsupported one'() {
-        given:
-        resolver.supportedLocales = null
+        resolver.supportedLocales = supportedLocales
         resolver.defaultLocale = DEFAULT
-        request.preferredLocales = [UNSUPPORTED]
-        when:
-        Locale resolved = resolver.resolveLocale(request)
-        then:
-        resolved == DEFAULT
-    }
-
-    void 'resolveLocale() should return user requested locale if it supported'() {
-        given:
-        resolver.supportedLocales = [GERMANY]
-        request.preferredLocales = [GERMANY]
-        when:
-        Locale resolved = resolver.resolveLocale(request)
-        then:
-        resolved == GERMANY
-    }
-
-    void 'resolveLocale() should return locale with same language if user requested locale that supported only partially by language'() {
-        given:
-        resolver.supportedLocales = [GERMAN]
-        request.preferredLocales = [GERMANY]
-        when:
-        Locale resolved = resolver.resolveLocale(request)
-        then:
-        resolved == GERMAN
-    }
-
-    void 'resolveLocale() should return supported locale that is first matching with user requested locales'() {
-        given:
-        resolver.supportedLocales = [GERMANY]
-        request.preferredLocales = [UNSUPPORTED, GERMANY]
-        when:
-        Locale resolved = resolver.resolveLocale(request)
-        then:
-        resolved == GERMANY
+        request.preferredLocales = preferredLocales
+        expect:
+        resolver.resolveLocale(request) == resolved
+        where:
+        supportedLocales | preferredLocales       | resolved    | comment
+        []               | [UNSUPPORTED]          | UNSUPPORTED | 'should return user requested locale if not configured: supportedLocales is empty list'
+        null             | [UNSUPPORTED]          | UNSUPPORTED | 'should return user requested locale if not configured: supportedLocales is null'
+        null             | [UNSUPPORTED]          | DEFAULT     | 'should return default locale if user requested unsupported one'
+        [GERMANY]        | [GERMANY]              | GERMANY     | 'should return user requested locale if it supported'
+        [GERMAN]         | [GERMANY]              | GERMAN      | 'should return locale with same language if user requested locale that supported only partially by language'
+        [GERMANY]        | [UNSUPPORTED, GERMANY] | GERMANY     | 'should return supported locale that is first matching with user requested locales'
     }
 
     void 'findFirstSupportedLocaleByLanguage(): if requested locale with country but we support only language'() {
         given:
         resolver.supportedLocales = [GERMAN]
-        when:
-        Locale supportedLocaleWithSameLanguage = resolver.findFirstSupportedLocaleByLanguage([GERMANY])
-        then:
-        supportedLocaleWithSameLanguage == GERMAN
+        expect:
+        resolver.findFirstSupportedLocaleByLanguage([GERMANY]) == GERMAN
     }
 
     void 'findFirstSupportedLocaleByLanguageAndCountry()'() {
         given:
         resolver.supportedLocales = [GERMAN, GERMANY, ANY]
-        when:
-        Locale resolved = resolver.findFirstSupportedLocaleByLanguageAndCountry([GERMANY])
-        then:
-        resolved == GERMANY
+        expect:
+        resolver.findFirstSupportedLocaleByLanguageAndCountry([GERMANY]) == GERMANY
     }
 
     @Unroll
