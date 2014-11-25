@@ -108,7 +108,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         resolver.supportedLocales = [GERMANY]
         List<Locale> userPreferredLocales = [UNSUPPORTED_LOCALE, GERMANY]
         when:
-        Locale preferredSupportedLocale = resolver.findFirstPreferredSupportedLocale(userPreferredLocales)
+        Locale preferredSupportedLocale = resolver.findFirstSupportedLocale(userPreferredLocales)
         then:
         preferredSupportedLocale == GERMANY
     }
@@ -119,7 +119,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         SmartConfigLocaleResolver resolver = new SmartConfigLocaleResolver()
         resolver.supportedLocales = configuredDefaultLocale
         expect:
-        resolver.findFirstPreferredSupportedLocale(userPreferredLocales) == preferredSupportedLocale
+        resolver.findFirstSupportedLocale(userPreferredLocales) == preferredSupportedLocale
         where:
         configuredDefaultLocale | userPreferredLocales | preferredSupportedLocale | comment
         [ENGLISH, US, UK]       | [UK, ENGLISH]        | UK                       | 'returned first preferred locale'
@@ -170,7 +170,7 @@ class SmartConfigLocaleResolverSpec extends Specification {
         resolver.supportedLocales = supportedLocales
         resolver.defaultLocale = configuredDefaultLocale
         expect:
-        resolver.determineBestLocale(mainRequestedLocale, requestedLocales) == bestLocale
+        resolver.determineBestLocale(requestedLocales) == bestLocale
         where:
         mainRequestedLocale | configuredDefaultLocale   | requestedLocales | supportedLocales | bestLocale
         FRANCE              | null                      | [ANY_LOCALE]     | [FRENCH]         | FRENCH
