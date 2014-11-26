@@ -1,7 +1,7 @@
 import grails.plugin.localeConfiguration.SmartConfigLocaleResolver
 
 class LocaleConfigurationGrailsPlugin {
-    String version = '1.1'
+    String version = '1.1.1'
     String grailsVersion = '2.0 > *'
     String title = 'Grails Locale Configuration Plugin'
     def description = '''\

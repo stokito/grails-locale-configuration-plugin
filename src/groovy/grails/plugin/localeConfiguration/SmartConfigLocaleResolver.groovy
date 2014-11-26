@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse
  */
 class SmartConfigLocaleResolver implements LocaleResolver {
     static final LOCALE_SESSION_ATTRIBUTE_NAME =  SmartConfigLocaleResolver.class.name + '.LOCALE';
-    LinkedHashSet<Locale> supportedLocales
+    List<Locale> supportedLocales
     Locale defaultLocale
 
 
