@@ -18,7 +18,7 @@ Add the following plugin dependency to your `BuildConfig.groovy`
 grails.project.dependency.resolution = {
     plugins {
         ...
-        compile ':locale-configuration:1.0'
+        compile ':locale-configuration:1.1'
         ...
     }
 }
@@ -30,8 +30,8 @@ Check latest published version on [Grails plugin portal](http://grails.org/plugi
 Add the following lines to your `Config.groovy`:
 ```groovy
 // order is matters!
-grails.plugins.localeConfiguration.supportedLocales = [Locale.GERMAN, Locale.ENGLISH]
-grails.plugins.localeConfiguration.defaultLocale = Locale.ENGLISH
+grails.plugin.localeConfiguration.supportedLocales = [Locale.GERMAN, Locale.ENGLISH]
+grails.plugin.localeConfiguration.defaultLocale = Locale.ENGLISH
 ```
 
 ## Locales priority
@@ -41,7 +41,7 @@ grails.plugins.localeConfiguration.defaultLocale = Locale.ENGLISH
 
 **NOTE:** This order is important and cannot be changed. You may want to provide a language selector, so the lang param should have the highest priority.
 
-[Take a look into specification for more details](/test/unit/name/stokito/SmartConfigLocaleResolverSpec.groovy)
+[Take a look into specification for more details](/test/unit/grails/plugin/localeConfiguration/SmartConfigLocaleResolverSpec.groovy)
 
 ## Running application example
 Take a look at the demo to see the plugin in action: [Grails Locale Configuration Plugin demo application] (https://github.com/stokito/grails-locale-configuration-plugin-demo)
@@ -67,8 +67,3 @@ For any questions feel free to contact me:
 Sergey Ponomarev, stokito@gmail.com, [blog](http://stokito.wordpress.com/), [LinkedIn](https://linkedin.com/in/stokito)
 
 Thanks to [Barry Norman](https://github.com/jigsawIV) for contribution!
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stokito/grails-locale-configuration-plugin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
-Please, review this project on [Ohloh](https://www.ohloh.net/p/grails-locale-configuration-plugin).
